@@ -71,7 +71,12 @@ export function BlogCollection({ documents }: { documents: BlogDocument[] }) {
                   key={item}
                   type="button"
                   onClick={() => setCategory(item)}
+                  aria-pressed={category === item}
                 >
+                  <i
+                    className={styles[item.toLowerCase()]}
+                    aria-hidden="true"
+                  />
                   <span>{item}</span>
                   <small>
                     {item === "All"

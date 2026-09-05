@@ -308,7 +308,8 @@ a {
   transform-origin: center bottom;
 }
 
-.about-copy strong {
+.about-copy strong,
+.about-followup strong {
   color: var(--ink);
   font-weight: 700;
 }
@@ -366,19 +367,38 @@ a {
   letter-spacing: -0.025em;
 }
 
-.about-columns {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(2rem, 5vw, 5rem);
-  max-width: 48rem;
-  margin: clamp(3rem, 6vw, 6rem) 0 0 auto;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.15vw, 1.15rem);
-  line-height: 1.7;
+.about-followup {
+  width: 100%;
+  margin-top: clamp(9rem, 15vw, 15rem);
 }
 
-.about-columns p {
-  margin: 0;
+.about-statement {
+  display: grid;
+  min-height: 55vh;
+  max-width: 28ch;
+  margin: 0 auto;
+  place-items: center;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.2vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.about-statement-line {
+  width: min(72vw, 58rem);
+  height: 1px;
+  margin: clamp(4rem, 8vw, 8rem) auto;
+  background: var(--line);
+}
+
+.statement-reveal {
+  animation: statement-reveal linear both;
+  animation-timeline: view();
+  animation-range: entry 8% cover 38%;
 }
 
 .trajectory {
@@ -613,6 +633,11 @@ a {
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 
+@keyframes statement-reveal {
+  from { opacity: 0; filter: blur(10px); transform: translateY(1.25rem); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
 @keyframes mesh-drift {
   0% { transform: translate3d(-3%, -2%, 0) scale(1.04) rotate(-2deg); opacity: 0.64; }
   55% { transform: translate3d(3%, 2%, 0) scale(1.1) rotate(2deg); opacity: 0.78; }
@@ -744,9 +769,13 @@ a {
     margin-left: 0;
   }
 
-  .about-columns {
-    grid-template-columns: 1fr;
-    margin-left: 0;
+  .about-followup {
+    margin-top: 7rem;
+  }
+
+  .about-statement {
+    min-height: 52vh;
+    font-size: clamp(1.8rem, 7.8vw, 3rem);
   }
 
   .trajectory-media {

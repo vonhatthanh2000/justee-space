@@ -17,4 +17,4 @@ The About section currently uses a `TV` monogram. Replace the contents of `Orbit
 
 ## Update links
 
-Replace the placeholder email, GitHub, and LinkedIn URLs in `src/app/page.tsx` before publishing.
+The email, GitHub, and LinkedIn URLs are configured in `src/app/page.tsx`.

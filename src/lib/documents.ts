@@ -14,6 +14,7 @@ export type BlogDocument = {
   draft: boolean;
   content: string;
   excerpt: string;
+  previewContent: string;
   connections: string[];
   backlinks: string[];
   unresolvedReferences: string[];
@@ -22,6 +23,21 @@ export type BlogDocument = {
 
 const documentsDirectory = path.join(process.cwd(), "content", "documents");
 const internalLinkPattern = /\]\(\/blog\/([a-z0-9-]+)(?:#[^)]+)?\)/g;
+
+function createMarkdownPreview(content: string, wordLimit = 330): string {
+  const blocks = content.trim().split(/\n{2,}/);
+  const preview: string[] = [];
+  let words = 0;
+
+  for (const block of blocks) {
+    const blockWords = block.trim().split(/\s+/).length;
+    if (preview.length > 0 && words + blockWords > wordLimit) break;
+    preview.push(block);
+    words += blockWords;
+  }
+
+  return preview.join("\n\n");
+}
 
 function assertString(value: unknown, field: string, filename: string): string {
   if (typeof value !== "string" || value.trim().length === 0) {
@@ -70,7 +86,8 @@ function parseDocument(
     updatedAt: data.updatedAt ? assertDate(data.updatedAt, "updatedAt", filename) : undefined,
     draft: data.draft === true,
     content,
-    excerpt: plainText.split(" ").slice(0, 110).join(" "),
+    excerpt: plainText.split(" ").slice(0, 330).join(" "),
+    previewContent: createMarkdownPreview(content),
     connections,
     readingMinutes: Math.max(1, Math.ceil(plainText.split(" ").length / 220)),
   };
