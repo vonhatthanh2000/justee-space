@@ -1,5 +1,21 @@
-import { PlaceholderPage } from "@/components/placeholder-page";
+import type { Metadata } from "next";
+import { Header } from "@/components/header";
+import { BlogCollection } from "@/components/blog/blog-collection";
+import { getDocuments } from "@/lib/documents";
+import styles from "./blog.module.css";
+
+export const metadata: Metadata = {
+  title: "Blog | Thanh",
+  description: "Technical discoveries, personal observations, and the paths between them.",
+};
 
 export default function BlogPage() {
-  return <PlaceholderPage title="Blog" description="Writing, technical notes, and things learned in public." />;
+  const documents = getDocuments();
+
+  return (
+    <main className={styles.blogRoot}>
+      <Header />
+      <BlogCollection documents={documents} />
+    </main>
+  );
 }

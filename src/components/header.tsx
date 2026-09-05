@@ -16,6 +16,7 @@ const links = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const isActive = (href: string) => href === "/" ? pathname === href : pathname.startsWith(href);
 
   return (
     <header className="site-header">
@@ -32,7 +33,7 @@ export function Header() {
 
       <nav className="desktop-nav" aria-label="Primary navigation">
         {links.map(([label, href]) => (
-          <Link className={pathname === href ? "active" : ""} href={href} key={href}>
+          <Link className={isActive(href) ? "active" : ""} href={href} key={href}>
             {label}
           </Link>
         ))}
@@ -56,7 +57,7 @@ export function Header() {
         aria-label="Mobile navigation"
       >
         {links.map(([label, href]) => (
-          <Link href={href} key={href} onClick={() => setOpen(false)}>
+          <Link className={isActive(href) ? "active" : ""} href={href} key={href} onClick={() => setOpen(false)}>
             {label}
           </Link>
         ))}
