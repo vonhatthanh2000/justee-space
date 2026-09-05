@@ -11,8 +11,8 @@ const destinations = [
       "Notes, technical discoveries, and lessons from building software.",
   },
   {
-    href: "/projects",
-    title: "Projects",
+    href: "/coding",
+    title: "Coding",
     description:
       "Selected products, experiments, and engineering case studies.",
   },
