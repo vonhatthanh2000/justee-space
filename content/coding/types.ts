@@ -1,3 +1,5 @@
+import type { StaticImageData } from "next/image";
+
 export type Project = {
   id: number;
   industry: string;
@@ -9,7 +11,7 @@ export type Project = {
   role: readonly string[];
   results: readonly string[];
   href: string;
-  image: string;
+  image: StaticImageData;
 };
 
 export type Skill = {
