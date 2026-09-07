@@ -1,11 +1,18 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import {
+  defaultDocumentLanguage,
+  type DocumentLanguage,
+} from "./document-language";
 
 export type DocumentCategory = "Personal" | "Technical";
+export type { DocumentLanguage } from "./document-language";
 
 export type BlogDocument = {
   slug: string;
+  language: DocumentLanguage;
+  languages: DocumentLanguage[];
   title: string;
   summary: string;
   category: DocumentCategory;
@@ -21,8 +28,14 @@ export type BlogDocument = {
   readingMinutes: number;
 };
 
+type ParsedDocument = Omit<BlogDocument, "languages" | "backlinks" | "unresolvedReferences">;
+
 const documentsDirectory = path.join(process.cwd(), "content", "documents");
-const internalLinkPattern = /\]\(\/blog\/([a-z0-9-]+)(?:#[^)]+)?\)/g;
+const internalLinkPattern = /\]\(\/blog\/([a-z0-9-]+)(?:[?#][^)]+)?\)/g;
+const languageDirectories: Record<DocumentLanguage, string> = {
+  vi: "vietnamese",
+  en: "english",
+};
 
 function createMarkdownPreview(content: string, wordLimit = 330): string {
   const blocks = content.trim().split(/\n{2,}/);
@@ -55,16 +68,15 @@ function assertDate(value: unknown, field: string, filename: string): string {
   return assertString(value, field, filename);
 }
 
-function parseDocument(
-  filename: string,
-): Omit<BlogDocument, "backlinks" | "unresolvedReferences"> {
+function parseDocument(filename: string, language: DocumentLanguage): ParsedDocument {
   const slug = filename.replace(/\.md$/, "");
-  const source = fs.readFileSync(path.join(documentsDirectory, filename), "utf8");
+  const relativePath = path.join(languageDirectories[language], filename);
+  const source = fs.readFileSync(path.join(documentsDirectory, relativePath), "utf8");
   const { data, content } = matter(source);
-  const category = assertString(data.category, "category", filename);
+  const category = assertString(data.category, "category", relativePath);
 
   if (category !== "Personal" && category !== "Technical") {
-    throw new Error(`${filename}: category must be Personal or Technical.`);
+    throw new Error(`${relativePath}: category must be Personal or Technical.`);
   }
 
   const connections = Array.from(content.matchAll(internalLinkPattern), (match) => match[1]).filter(
@@ -79,11 +91,12 @@ function parseDocument(
 
   return {
     slug,
-    title: assertString(data.title, "title", filename),
-    summary: assertString(data.summary, "summary", filename),
+    language,
+    title: assertString(data.title, "title", relativePath),
+    summary: assertString(data.summary, "summary", relativePath),
     category,
-    publishedAt: assertDate(data.publishedAt, "publishedAt", filename),
-    updatedAt: data.updatedAt ? assertDate(data.updatedAt, "updatedAt", filename) : undefined,
+    publishedAt: assertDate(data.publishedAt, "publishedAt", relativePath),
+    updatedAt: data.updatedAt ? assertDate(data.updatedAt, "updatedAt", relativePath) : undefined,
     draft: data.draft === true,
     content,
     excerpt: plainText.split(" ").slice(0, 330).join(" "),
@@ -93,36 +106,60 @@ function parseDocument(
   };
 }
 
-export function getDocuments(): BlogDocument[] {
-  const parsed = fs
-    .readdirSync(documentsDirectory)
-    .filter((filename) => filename.endsWith(".md"))
-    .map(parseDocument)
+function getParsedDocuments(): ParsedDocument[] {
+  return (Object.entries(languageDirectories) as [DocumentLanguage, string][])
+    .flatMap(([language, directory]) =>
+      fs
+        .readdirSync(path.join(documentsDirectory, directory))
+        .filter((filename) => filename.endsWith(".md"))
+        .map((filename) => parseDocument(filename, language)),
+    )
     .filter((document) => process.env.NODE_ENV !== "production" || !document.draft);
+}
 
-  const slugs = new Set(parsed.map((document) => document.slug));
+export function getDocuments(
+  preferredLanguage: DocumentLanguage = defaultDocumentLanguage,
+): BlogDocument[] {
+  const parsed = getParsedDocuments();
+  const bySlug = new Map<string, ParsedDocument[]>();
 
-  return parsed
-    .map((document) => ({
-      ...document,
-      connections: document.connections,
-      backlinks: parsed
-        .filter((candidate) => candidate.connections.includes(document.slug))
-        .map((candidate) => candidate.slug),
-      unresolvedReferences: document.connections.filter((slug) => !slugs.has(slug)),
-    }))
+  for (const document of parsed) {
+    const versions = bySlug.get(document.slug) ?? [];
+    if (versions.some((version) => version.language === document.language)) {
+      throw new Error(`${document.slug}: duplicate ${document.language} translation.`);
+    }
+    versions.push(document);
+    bySlug.set(document.slug, versions);
+  }
+
+  const visibleSlugs = new Set(bySlug.keys());
+
+  return Array.from(bySlug.entries())
+    .map(([slug, versions]) => {
+      const selected =
+        versions.find((version) => version.language === preferredLanguage) ??
+        versions.find((version) => version.language === "vi") ??
+        versions[0];
+      const languages = (["vi", "en"] as DocumentLanguage[]).filter((language) =>
+        versions.some((version) => version.language === language),
+      );
+
+      return {
+        ...selected,
+        languages,
+        backlinks: parsed
+          .filter((candidate) => candidate.connections.includes(slug))
+          .map((candidate) => candidate.slug)
+          .filter((candidate, index, all) => all.indexOf(candidate) === index),
+        unresolvedReferences: selected.connections.filter((target) => !visibleSlugs.has(target)),
+      };
+    })
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 
-export function getDocument(slug: string): BlogDocument | undefined {
-  return getDocuments().find((document) => document.slug === slug);
-}
-
-export function formatDocumentDate(date: string): string {
-  return new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${date}T00:00:00Z`));
+export function getDocument(
+  slug: string,
+  preferredLanguage: DocumentLanguage = defaultDocumentLanguage,
+): BlogDocument | undefined {
+  return getDocuments(preferredLanguage).find((document) => document.slug === slug);
 }

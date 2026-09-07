@@ -18,7 +18,14 @@ import {
   X,
 } from "@phosphor-icons/react";
 import type { BlogDocument, DocumentCategory } from "@/lib/documents";
+import type { DocumentLanguage } from "@/lib/document-language";
+import {
+  documentLanguages,
+  getDocumentHref,
+  getGraphHref,
+} from "@/lib/document-language";
 import { BlogToolbar } from "./blog-toolbar";
+import { LanguageFlags } from "./language-flags";
 import styles from "@/app/blog/blog.module.css";
 
 const positions: Record<string, [number, number]> = {
@@ -37,9 +44,11 @@ const maximumZoom = 1.6;
 export function GraphExplorer({
   documents,
   initialDocument,
+  language,
 }: {
   documents: BlogDocument[];
   initialDocument?: string;
+  language: DocumentLanguage;
 }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -90,12 +99,12 @@ export function GraphExplorer({
 
   function selectDocument(slug: string) {
     setSelectedSlug(slug);
-    router.replace(`/blog/graph?document=${slug}`, { scroll: false });
+    router.replace(getGraphHref(language, slug), { scroll: false });
   }
 
   function closePreview() {
     setSelectedSlug("");
-    router.replace("/blog/graph", { scroll: false });
+    router.replace(getGraphHref(language), { scroll: false });
   }
 
   function toggleCategory(category: DocumentCategory) {
@@ -187,20 +196,44 @@ export function GraphExplorer({
 
   return (
     <>
-      <BlogToolbar activeMode="graph" query={query} onQueryChange={setQuery} />
+      <BlogToolbar
+        activeMode="graph"
+        query={query}
+        onQueryChange={setQuery}
+        language={language}
+      />
       <section className={styles.graphPage} aria-labelledby="graph-title">
         <header className={styles.graphHeader}>
           <div>
             <p>Explore the collection</p>
             <h1 id="graph-title">Graph view</h1>
           </div>
-          <div className={styles.graphStats}>
-            <span>
-              <strong>{visibleDocuments.length}</strong> documents
-            </span>
-            <span>
-              <strong>{edges.length}</strong> connections
-            </span>
+          <div className={styles.graphHeaderControls}>
+            <div className={styles.graphStats}>
+              <span>
+                <strong>{visibleDocuments.length}</strong> documents
+              </span>
+              <span>
+                <strong>{edges.length}</strong> connections
+              </span>
+            </div>
+            <nav
+              className={`${styles.modeSwitch} ${styles.languageModeSwitch}`}
+              aria-label="Choose the graph language"
+            >
+              {(["vi", "en"] as DocumentLanguage[]).map((option) => (
+                <Link
+                  className={language === option ? styles.modeActive : ""}
+                  href={getGraphHref(option, selectedSlug || undefined)}
+                  hrefLang={option}
+                  key={option}
+                  aria-current={language === option ? "page" : undefined}
+                >
+                  <span aria-hidden="true">{documentLanguages[option].flag}</span>
+                  {documentLanguages[option].shortLabel}
+                </Link>
+              ))}
+            </nav>
           </div>
         </header>
 
@@ -347,6 +380,7 @@ export function GraphExplorer({
             >
               {selected.category}
             </span>
+            <LanguageFlags languages={selected.languages} />
             <h2>{selected.title}</h2>
             <p className={styles.previewSummary}>{selected.summary}</p>
             <div className={styles.previewMarkdown}>
@@ -412,7 +446,7 @@ export function GraphExplorer({
             </div>
             <Link
               className={styles.fullPageLink}
-              href={`/blog/${selected.slug}`}
+              href={getDocumentHref(selected.slug, selected.language)}
             >
               View full page <ArrowRight size={17} />
             </Link>

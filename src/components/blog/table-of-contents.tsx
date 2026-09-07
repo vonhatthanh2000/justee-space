@@ -8,7 +8,13 @@ type TableOfContentsItem = {
   label: string;
 };
 
-export function TableOfContents({ items }: { items: TableOfContentsItem[] }) {
+export function TableOfContents({
+  items,
+  label = "On this page",
+}: {
+  items: TableOfContentsItem[];
+  label?: string;
+}) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
 
   useEffect(() => {
@@ -34,8 +40,8 @@ export function TableOfContents({ items }: { items: TableOfContentsItem[] }) {
   }, [items]);
 
   return (
-    <nav className={styles.tableOfContents} aria-label="On this page">
-      <p className={styles.railLabel}>On this page</p>
+    <nav className={styles.tableOfContents} aria-label={label}>
+      <p className={styles.railLabel}>{label}</p>
       {items.map((item) => (
         <a
           className={activeId === item.id ? styles.tocActive : ""}

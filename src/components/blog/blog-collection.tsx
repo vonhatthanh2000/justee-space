@@ -4,7 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Graph, Sparkle } from "@phosphor-icons/react";
 import type { BlogDocument, DocumentCategory } from "@/lib/documents";
+import type { DocumentLanguage } from "@/lib/document-language";
+import {
+  documentLanguages,
+  formatDocumentDate,
+  getDocumentHref,
+} from "@/lib/document-language";
 import { BlogToolbar } from "./blog-toolbar";
+import { LanguageFlags } from "./language-flags";
 import styles from "@/app/blog/blog.module.css";
 
 const categories: Array<"All" | DocumentCategory> = [
@@ -13,16 +20,13 @@ const categories: Array<"All" | DocumentCategory> = [
   "Technical",
 ];
 
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${date}T00:00:00Z`));
-}
-
-export function BlogCollection({ documents }: { documents: BlogDocument[] }) {
+export function BlogCollection({
+  documents,
+  language,
+}: {
+  documents: BlogDocument[];
+  language: DocumentLanguage;
+}) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
 
@@ -59,6 +63,7 @@ export function BlogCollection({ documents }: { documents: BlogDocument[] }) {
         activeMode="documents"
         query={query}
         onQueryChange={setQuery}
+        language={language}
       />
       <div className={styles.collectionPage}>
         <aside className={styles.collectionRail} aria-label="Document filters">
@@ -103,14 +108,31 @@ export function BlogCollection({ documents }: { documents: BlogDocument[] }) {
               <p className={styles.heroKicker}>
                 Notes on building and noticing
               </p>
-              <h1 id="blog-title">Ideas are more useful when they connect.</h1>
+              <h1 id="blog-title">Documents make ideas more valuable.</h1>
             </div>
+            <nav
+              className={`${styles.modeSwitch} ${styles.languageModeSwitch}`}
+              aria-label="Choose the blog language"
+            >
+              {(["vi", "en"] as DocumentLanguage[]).map((option) => (
+                <Link
+                  className={language === option ? styles.modeActive : ""}
+                  href={option === "vi" ? "/blog" : "/blog?lang=en"}
+                  hrefLang={option}
+                  key={option}
+                  aria-current={language === option ? "page" : undefined}
+                >
+                  <span aria-hidden="true">{documentLanguages[option].flag}</span>
+                  {documentLanguages[option].shortLabel}
+                </Link>
+              ))}
+            </nav>
           </header>
 
           {query.length === 0 && category === "All" && featured ? (
             <Link
               className={styles.featuredDocument}
-              href={`/blog/${featured.slug}`}
+              href={getDocumentHref(featured.slug, featured.language)}
             >
               <div className={styles.featuredConstellation} aria-hidden="true">
                 <span />
@@ -128,10 +150,11 @@ export function BlogCollection({ documents }: { documents: BlogDocument[] }) {
                   <Sparkle size={13} weight="fill" aria-hidden="true" />
                   {featured.category}
                 </span>
+                <LanguageFlags languages={featured.languages} />
                 <h2>{featured.title}</h2>
                 <p>{featured.summary}</p>
                 <small>
-                  {formatDate(featured.publishedAt)}
+                  {formatDocumentDate(featured.publishedAt, featured.language)}
                   <span>{featured.readingMinutes} min read</span>
                 </small>
               </div>
@@ -159,21 +182,27 @@ export function BlogCollection({ documents }: { documents: BlogDocument[] }) {
               {filtered.map((document) => (
                 <Link
                   className={styles.documentRow}
-                  href={`/blog/${document.slug}`}
+                  href={getDocumentHref(document.slug, document.language)}
                   key={document.slug}
                 >
                   <div>
-                    <span
-                      className={`${styles.categoryMark} ${styles[document.category.toLowerCase()]}`}
-                    >
-                      {document.category}
-                    </span>
+                    <div className={styles.documentLabels}>
+                      <span
+                        className={`${styles.categoryMark} ${styles[document.category.toLowerCase()]}`}
+                      >
+                        {document.category}
+                      </span>
+                      <LanguageFlags languages={document.languages} />
+                    </div>
                     <h3>{document.title}</h3>
                     <p>{document.summary}</p>
                   </div>
                   <div className={styles.rowMeta}>
                     <time dateTime={document.publishedAt}>
-                      {formatDate(document.publishedAt)}
+                      {formatDocumentDate(
+                        document.publishedAt,
+                        document.language,
+                      )}
                     </time>
                     <span>{document.connections.length} connections</span>
                   </div>
