@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
+import { Alegreya } from "next/font/google";
 import "./globals.css";
+
+const alegreya = Alegreya({
+  weight: "variable",
+  style: "normal",
+  subsets: ["latin", "vietnamese"],
+  display: "swap",
+  variable: "--font-vietnamese",
+});
 
 export const metadata: Metadata = {
   title: "Thanh | Developer and Creative",
@@ -12,9 +21,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html className={alegreya.variable} lang="en">
       <body>{children}</body>
     </html>
   );

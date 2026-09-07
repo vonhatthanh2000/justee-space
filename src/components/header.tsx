@@ -15,7 +15,8 @@ const links = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const isActive = (href: string) => href === "/" ? pathname === href : pathname.startsWith(href);
+  const isActive = (href: string) =>
+    href === "/" ? pathname === href : pathname.startsWith(href);
 
   return (
     <header className="site-header">
@@ -26,13 +27,23 @@ export function Header() {
         onClick={() => setOpen(false)}
       >
         <span className="brand-mark" aria-hidden="true">
-          <Image src="/images/favicon.webp" alt="" width={64} height={64} priority />
+          <Image
+            src="/images/logo.webp"
+            alt=""
+            width={64}
+            height={64}
+            priority
+          />
         </span>
       </Link>
 
       <nav className="desktop-nav" aria-label="Primary navigation">
         {links.map(([label, href]) => (
-          <Link className={isActive(href) ? "active" : ""} href={href} key={href}>
+          <Link
+            className={isActive(href) ? "active" : ""}
+            href={href}
+            key={href}
+          >
             {label}
           </Link>
         ))}
@@ -56,7 +67,12 @@ export function Header() {
         aria-label="Mobile navigation"
       >
         {links.map(([label, href]) => (
-          <Link className={isActive(href) ? "active" : ""} href={href} key={href} onClick={() => setOpen(false)}>
+          <Link
+            className={isActive(href) ? "active" : ""}
+            href={href}
+            key={href}
+            onClick={() => setOpen(false)}
+          >
             {label}
           </Link>
         ))}

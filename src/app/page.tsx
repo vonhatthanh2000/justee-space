@@ -33,7 +33,7 @@ export default function Home() {
         <div className="hero-stars" aria-hidden="true" />
         <div className="hero-wash" />
         <div className="hero-content">
-          <p className="hero-intro">👋, Hi, I&apos;m Thanh</p>
+          <p className="hero-intro">👋 Hi, I&apos;m Thanh</p>
           <h1 id="hero-title">
             <span>I build software, document what I learn,</span>
             <span>and collect ideas that might become</span>
@@ -140,7 +140,8 @@ export default function Home() {
         <div className="explore-intro reveal">
           <h2 id="explore-title">Continue exploring</h2>
           <p>
-            The rest of this site collects what I build, learn, create, and enjoy outside software.
+            The rest of this site collects what I build, learn, create, and
+            enjoy outside software.
           </p>
         </div>
         <div className="destination-list">

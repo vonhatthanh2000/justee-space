@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import type {
+  CSSProperties,
   PointerEvent as ReactPointerEvent,
   WheelEvent as ReactWheelEvent,
 } from "react";
@@ -202,7 +203,11 @@ export function GraphExplorer({
         onQueryChange={setQuery}
         language={language}
       />
-      <section className={styles.graphPage} aria-labelledby="graph-title">
+      <section
+        className={styles.graphPage}
+        aria-labelledby="graph-title"
+        lang={language}
+      >
         <header className={styles.graphHeader}>
           <div>
             <p>Explore the collection</p>
@@ -293,7 +298,7 @@ export function GraphExplorer({
                   );
                 })}
               </svg>
-              {visibleDocuments.map((document) => {
+              {visibleDocuments.map((document, index) => {
                 const [x, y] = positions[document.slug] ?? [450, 310];
                 const isSelected = document.slug === selectedSlug;
                 const isNeighbor =
@@ -302,10 +307,13 @@ export function GraphExplorer({
                 return (
                   <button
                     className={`${styles.graphNode} ${styles[document.category.toLowerCase()]} ${isSelected ? styles.nodeSelected : ""} ${selected && !isSelected && !isNeighbor ? styles.nodeDimmed : ""}`}
-                    style={{
-                      left: `${(x / 900) * 100}%`,
-                      top: `${(y / 620) * 100}%`,
-                    }}
+                    style={
+                      {
+                        left: `${(x / 900) * 100}%`,
+                        top: `${(y / 620) * 100}%`,
+                        "--node-delay": `${250 + index * 70}ms`,
+                      } as CSSProperties
+                    }
                     type="button"
                     data-graph-node
                     key={document.slug}
@@ -313,7 +321,9 @@ export function GraphExplorer({
                     aria-pressed={isSelected}
                   >
                     <span aria-hidden="true" />
-                    <strong>{document.title}</strong>
+                    <strong className={language === "vi" ? styles.vietnameseHeading : undefined}>
+                      {document.title}
+                    </strong>
                   </button>
                 );
               })}
@@ -381,7 +391,9 @@ export function GraphExplorer({
               {selected.category}
             </span>
             <LanguageFlags languages={selected.languages} />
-            <h2>{selected.title}</h2>
+            <h2 className={language === "vi" ? styles.vietnameseHeading : undefined}>
+              {selected.title}
+            </h2>
             <p className={styles.previewSummary}>{selected.summary}</p>
             <div className={styles.previewMarkdown}>
               <ReactMarkdown

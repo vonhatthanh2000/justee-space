@@ -622,6 +622,20 @@
   line-height: 1.55;
 }
 
+.featuredCopy h2.vietnameseHeading,
+.documentRow h3.vietnameseHeading,
+.graphNode strong.vietnameseHeading,
+.nodePreview h2.vietnameseHeading,
+.documentHeader h1.vietnameseHeading,
+.markdownBody h2.vietnameseHeading,
+.documentFooter h2.vietnameseHeading,
+.documentFooter strong.vietnameseHeading {
+  font-family: var(--font-vietnamese), Georgia, serif;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
 .rowMeta {
   display: grid;
   gap: 0.65rem;
@@ -895,6 +909,14 @@
   font-weight: 550;
   line-height: 1.08;
   text-align: center;
+}
+
+.graphPage:lang(vi) .previewMarkdown h2,
+.graphPage:lang(vi) .previewMarkdown h3 {
+  font-family: var(--font-vietnamese), Georgia, serif;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
 
 .nodeSelected > span {
@@ -1320,7 +1342,10 @@
 .readerArticle:lang(vi) .markdownBody h3,
 .readerArticle:lang(vi) .documentFooter h2,
 .readerArticle:lang(vi) .documentFooter a strong {
-  letter-spacing: -0.025em;
+  font-family: var(--font-vietnamese), Georgia, serif;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
 
 .readerArticle:lang(vi) .markdownBody {
@@ -1542,6 +1567,26 @@
   }
 }
 
+@keyframes graph-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes graph-node-in {
+  from {
+    opacity: 0;
+    scale: 0.76;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
 @keyframes connection-flow {
   to {
     stroke-dashoffset: -24;
@@ -1585,6 +1630,35 @@
 
   .documentList {
     animation: blog-rise-in 760ms 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .graphHeader > div:first-child {
+    animation: blog-rise-in 650ms 70ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .graphHeaderControls {
+    animation: blog-rise-in 650ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .graphHeader .languageModeSwitch {
+    animation: none;
+  }
+
+  .graphFilters {
+    animation: blog-rise-in 600ms 210ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .graphViewport > svg {
+    animation: graph-fade-in 720ms 180ms ease-out both;
+  }
+
+  .graphNode {
+    animation: graph-node-in 560ms cubic-bezier(0.16, 1, 0.3, 1)
+      var(--node-delay) backwards;
+  }
+
+  .graphEmpty {
+    animation: blog-rise-in 600ms 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
 

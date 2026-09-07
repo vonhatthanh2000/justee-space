@@ -102,7 +102,11 @@ export function BlogCollection({
           </div>
         </aside>
 
-        <section className={styles.collectionMain} aria-labelledby="blog-title">
+        <section
+          className={styles.collectionMain}
+          aria-labelledby="blog-title"
+          lang={language}
+        >
           <header className={styles.collectionHero}>
             <div>
               <p className={styles.heroKicker}>
@@ -151,7 +155,9 @@ export function BlogCollection({
                   {featured.category}
                 </span>
                 <LanguageFlags languages={featured.languages} />
-                <h2>{featured.title}</h2>
+                <h2 className={language === "vi" ? styles.vietnameseHeading : undefined}>
+                  {featured.title}
+                </h2>
                 <p>{featured.summary}</p>
                 <small>
                   {formatDocumentDate(featured.publishedAt, featured.language)}
@@ -194,7 +200,9 @@ export function BlogCollection({
                       </span>
                       <LanguageFlags languages={document.languages} />
                     </div>
-                    <h3>{document.title}</h3>
+                    <h3 className={language === "vi" ? styles.vietnameseHeading : undefined}>
+                      {document.title}
+                    </h3>
                     <p>{document.summary}</p>
                   </div>
                   <div className={styles.rowMeta}>
