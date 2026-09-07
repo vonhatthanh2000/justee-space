@@ -18,3 +18,13 @@ The About section currently uses a `TV` monogram. Replace the contents of `Orbit
 ## Update links
 
 The email, GitHub, and LinkedIn URLs are configured in `src/app/page.tsx`.
+
+## Content repository
+
+The files under `content/` are synchronized from the private
+[`justee-space-content`](https://github.com/vonhatthanh2000/justee-space-content)
+repository. Treat that repository as the source of truth for blog documents,
+coding experience, projects, skills, images, and the downloadable CV.
+
+The content repository validates this site's lint and production build before
+committing synchronized content to `main`.

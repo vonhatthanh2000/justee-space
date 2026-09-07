@@ -10,7 +10,6 @@ const links = [
   ["Blog", "/blog"],
   ["Coding", "/coding"],
   ["Creative", "/creative"],
-  ["Pastimes", "/pastimes"],
 ] as const;
 
 export function Header() {

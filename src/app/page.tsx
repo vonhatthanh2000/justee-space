@@ -21,12 +21,6 @@ const destinations = [
     title: "Creative",
     description: "Photography, filmmaking, music, and visual experiments.",
   },
-  {
-    href: "/pastimes",
-    title: "Pastimes",
-    description:
-      "Interests, collections, recommendations, and things explored for fun.",
-  },
 ];
 
 export default function Home() {
