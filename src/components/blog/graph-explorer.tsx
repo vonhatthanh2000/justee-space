@@ -55,6 +55,7 @@ export function GraphExplorer({
   const [query, setQuery] = useState("");
   const [categories, setCategories] =
     useState<DocumentCategory[]>(categoryOptions);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedSlug, setSelectedSlug] = useState(initialDocument ?? "");
   const viewportRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef({ x: 0, y: 0, scale: 1 });
@@ -66,17 +67,27 @@ export function GraphExplorer({
     originY: number;
   } | null>(null);
 
+  const tags = useMemo(
+    () =>
+      Array.from(
+        new Set(documents.flatMap((document) => document.tags)),
+      ).sort(),
+    [documents],
+  );
+
   const visibleDocuments = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     return documents.filter(
       (document) =>
         categories.includes(document.category) &&
+        (selectedTags.length === 0 ||
+          selectedTags.some((tag) => document.tags.includes(tag))) &&
         (normalized.length === 0 ||
-          `${document.title} ${document.summary}`
+          `${document.part ?? ""} ${document.title} ${document.summary} ${document.tags.join(" ")}`
             .toLowerCase()
             .includes(normalized)),
     );
-  }, [categories, documents, query]);
+  }, [categories, documents, query, selectedTags]);
 
   const visibleSlugs = useMemo(
     () => new Set(visibleDocuments.map((document) => document.slug)),
@@ -117,6 +128,14 @@ export function GraphExplorer({
       }
       return [...current, category];
     });
+  }
+
+  function toggleTag(tag: string) {
+    setSelectedTags((current) =>
+      current.includes(tag)
+        ? current.filter((item) => item !== tag)
+        : [...current, tag],
+    );
   }
 
   function applyTransform(next: { x: number; y: number; scale: number }) {
@@ -242,23 +261,41 @@ export function GraphExplorer({
           </div>
         </header>
 
-        <div
-          className={styles.graphFilters}
-          aria-label="Filter graph by category"
-        >
-          {categoryOptions.map((category) => (
-            <button
-              key={category}
-              type="button"
-              className={
-                categories.includes(category) ? styles.filterActive : ""
-              }
-              onClick={() => toggleCategory(category)}
-            >
-              <span className={styles[category.toLowerCase()]} />
-              {category}
-            </button>
-          ))}
+        <div className={styles.graphFilters} aria-label="Graph filters">
+          <div role="group" aria-label="Filter graph by category">
+            {categoryOptions.map((category) => (
+              <button
+                key={category}
+                type="button"
+                className={
+                  categories.includes(category) ? styles.filterActive : ""
+                }
+                onClick={() => toggleCategory(category)}
+              >
+                <span className={styles[category.toLowerCase()]} />
+                {category}
+              </button>
+            ))}
+          </div>
+          <div
+            className={styles.graphTagFilters}
+            role="group"
+            aria-label="Filter graph by tag"
+          >
+            {tags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                className={
+                  selectedTags.includes(tag) ? styles.filterActive : ""
+                }
+                onClick={() => toggleTag(tag)}
+                aria-pressed={selectedTags.includes(tag)}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div
@@ -333,6 +370,16 @@ export function GraphExplorer({
               <MagnifyingGlass size={28} aria-hidden="true" />
               <h2>No matching documents</h2>
               <p>Try a broader search or enable both categories.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setCategories(categoryOptions);
+                  setSelectedTags([]);
+                }}
+              >
+                Reset filters
+              </button>
             </div>
           )}
 
@@ -391,10 +438,18 @@ export function GraphExplorer({
               {selected.category}
             </span>
             <LanguageFlags languages={selected.languages} />
+            {selected.part ? (
+              <span className={styles.documentPart}>{selected.part}</span>
+            ) : null}
             <h2 className={language === "vi" ? styles.vietnameseHeading : undefined}>
               {selected.title}
             </h2>
             <p className={styles.previewSummary}>{selected.summary}</p>
+            <div className={styles.documentTags} aria-label="Tags">
+              {selected.tags.map((tag) => (
+                <span key={tag}>#{tag}</span>
+              ))}
+            </div>
             <div className={styles.previewMarkdown}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}

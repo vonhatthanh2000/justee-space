@@ -149,6 +149,9 @@ export default async function DocumentPage({
               </span>
               <LanguageFlags languages={document.languages} />
             </div>
+            {document.part ? (
+              <span className={styles.documentPart}>{document.part}</span>
+            ) : null}
             <h1
               className={
                 document.language === "vi"
@@ -159,6 +162,11 @@ export default async function DocumentPage({
               {document.title}
             </h1>
             <p>{document.summary}</p>
+            <div className={styles.documentTags} aria-label="Tags">
+              {document.tags.map((tag) => (
+                <span key={tag}>#{tag}</span>
+              ))}
+            </div>
             <div className={styles.documentMeta}>
               <time dateTime={document.publishedAt}>
                 {formatDocumentDate(document.publishedAt, document.language)}

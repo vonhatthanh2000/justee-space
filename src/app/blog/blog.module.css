@@ -283,6 +283,62 @@
   font-size: 0.65rem;
 }
 
+.tagFilterSection {
+  margin-top: 2rem;
+}
+
+.tagFilterHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.tagFilterHeading button {
+  padding: 0;
+  border: 0;
+  color: var(--blog-accent);
+  font: inherit;
+  font-size: 0.68rem;
+  cursor: pointer;
+  background: transparent;
+}
+
+.tagStack {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.tagStack button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.38rem 0.15rem;
+  border: 0;
+  color: var(--blog-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  transition:
+    color 180ms ease,
+    padding 180ms ease;
+}
+
+.tagStack button:hover,
+.tagStack .tagActive {
+  padding-left: 0.45rem;
+  color: var(--blog-accent);
+  box-shadow: inset 2px 0 0 var(--blog-accent);
+}
+
+.tagStack small {
+  color: var(--blog-faint);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+}
+
 .graphInvitation {
   margin-top: 2rem;
   padding: 1.15rem;
@@ -474,6 +530,17 @@
   color: var(--blog-blue);
 }
 
+.documentPart {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  color: var(--blog-accent);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 560;
+  line-height: 1.4;
+}
+
 .languageFlags {
   display: inline-flex;
   gap: 0.65rem;
@@ -509,6 +576,14 @@
 
 .featuredCopy > .languageFlags {
   margin-top: 0.75rem;
+}
+
+.featuredCopy > .documentPart {
+  margin-top: 1rem;
+}
+
+.featuredCopy > .documentPart + h2 {
+  margin-top: 0.5rem;
 }
 
 .featuredCopy > p {
@@ -605,6 +680,14 @@
   align-items: center;
 }
 
+.documentRow .documentPart {
+  margin-top: 0.7rem;
+}
+
+.documentRow .documentPart + h3 {
+  margin-top: 0.35rem;
+}
+
 .documentRow h3 {
   margin: 0.55rem 0 0.45rem;
   font-family: var(--display);
@@ -620,6 +703,20 @@
   color: var(--blog-muted);
   font-size: 0.8rem;
   line-height: 1.55;
+}
+
+.documentTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.7rem;
+  margin-top: 0.75rem;
+  color: var(--blog-faint);
+  font-family: var(--mono);
+  font-size: 0.61rem;
+}
+
+.documentTags span {
+  white-space: nowrap;
 }
 
 .featuredCopy h2.vietnameseHeading,
@@ -685,6 +782,17 @@
   border: 1px solid var(--blog-line-strong);
   border-radius: 8px;
   color: var(--blog-ink);
+  cursor: pointer;
+  background: var(--blog-surface-solid);
+}
+
+.graphEmpty > button {
+  margin-top: 1.25rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--blog-line-strong);
+  border-radius: 8px;
+  color: var(--blog-ink);
+  font: inherit;
   cursor: pointer;
   background: var(--blog-surface-solid);
 }
@@ -755,9 +863,17 @@
   position: absolute;
   z-index: 5;
   top: 8.7rem;
+  right: clamp(1rem, 3vw, 3rem);
   left: clamp(1rem, 3vw, 3rem);
+  display: grid;
+  gap: 0.35rem;
+  pointer-events: none;
+}
+
+.graphFilters > div {
   display: flex;
   gap: 0.3rem;
+  pointer-events: auto;
 }
 
 .graphFilters button {
@@ -793,6 +909,17 @@
   border-color: var(--blog-line);
   opacity: 1;
   background: rgba(249, 251, 253, 0.72);
+}
+
+.graphTagFilters {
+  max-width: min(760px, calc(100vw - 2rem));
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+  scrollbar-width: thin;
+}
+
+.graphTagFilters button {
+  flex: 0 0 auto;
 }
 
 .graphStage {
@@ -1052,6 +1179,14 @@
   letter-spacing: -0.055em;
 }
 
+.nodePreview > .documentPart {
+  margin-top: 1.1rem;
+}
+
+.nodePreview > .documentPart + h2 {
+  margin-top: 0.55rem;
+}
+
 .previewSummary {
   margin: 0;
   color: var(--blog-muted);
@@ -1260,6 +1395,14 @@
   justify-content: space-between;
 }
 
+.documentHeader > .documentPart {
+  margin-top: 2.2rem;
+}
+
+.documentHeader > .documentPart + h1 {
+  margin-top: 0.65rem;
+}
+
 .documentHeader h1 {
   max-width: 940px;
   margin: 1.2rem 0 1rem;
@@ -1276,6 +1419,10 @@
   color: var(--blog-muted);
   font-size: 1rem;
   line-height: 1.65;
+}
+
+.documentHeader > .documentTags {
+  margin-top: 1.25rem;
 }
 
 .documentMeta {
@@ -1718,6 +1865,24 @@
   }
   .collectionRail > div:first-child {
     margin-bottom: 2.5rem;
+  }
+  .tagFilterSection {
+    margin: 0 0 2.5rem;
+  }
+  .tagStack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .tagStack button,
+  .tagStack button:hover,
+  .tagStack .tagActive {
+    width: auto;
+    gap: 0.55rem;
+    padding: 0.48rem 0.65rem;
+    border: 1px solid var(--blog-line);
+    border-radius: 8px;
+    box-shadow: none;
   }
   .categoryStack {
     display: flex;

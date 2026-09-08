@@ -29,6 +29,19 @@ export function BlogCollection({
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const tags = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const document of documents) {
+      for (const tag of document.tags) {
+        counts.set(tag, (counts.get(tag) ?? 0) + 1);
+      }
+    }
+    return Array.from(counts, ([name, count]) => ({ name, count })).sort(
+      (a, b) => a.name.localeCompare(b.name),
+    );
+  }, [documents]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -46,14 +59,25 @@ export function BlogCollection({
     return documents.filter((document) => {
       const matchesCategory =
         category === "All" || document.category === category;
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((tag) => document.tags.includes(tag));
       const matchesQuery =
         normalizedQuery.length === 0 ||
-        `${document.title} ${document.summary} ${document.content}`
+        `${document.part ?? ""} ${document.title} ${document.summary} ${document.content} ${document.tags.join(" ")}`
           .toLowerCase()
           .includes(normalizedQuery);
-      return matchesCategory && matchesQuery;
+      return matchesCategory && matchesTags && matchesQuery;
     });
-  }, [category, documents, query]);
+  }, [category, documents, query, selectedTags]);
+
+  function toggleTag(tag: string) {
+    setSelectedTags((current) =>
+      current.includes(tag)
+        ? current.filter((item) => item !== tag)
+        : [...current, tag],
+    );
+  }
 
   const featured = documents[0];
 
@@ -90,6 +114,37 @@ export function BlogCollection({
                           (document) => document.category === item,
                         ).length}
                   </small>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.tagFilterSection}>
+            <div className={styles.tagFilterHeading}>
+              <p className={styles.railLabel}>Filter by tag</p>
+              {selectedTags.length > 0 ? (
+                <button type="button" onClick={() => setSelectedTags([])}>
+                  Clear
+                </button>
+              ) : null}
+            </div>
+            <div
+              className={styles.tagStack}
+              role="group"
+              aria-label="Document tags"
+            >
+              {tags.map((tag) => (
+                <button
+                  className={
+                    selectedTags.includes(tag.name) ? styles.tagActive : ""
+                  }
+                  key={tag.name}
+                  type="button"
+                  onClick={() => toggleTag(tag.name)}
+                  aria-pressed={selectedTags.includes(tag.name)}
+                >
+                  <span>#{tag.name}</span>
+                  <small>{tag.count}</small>
                 </button>
               ))}
             </div>
@@ -133,7 +188,10 @@ export function BlogCollection({
             </nav>
           </header>
 
-          {query.length === 0 && category === "All" && featured ? (
+          {query.length === 0 &&
+          category === "All" &&
+          selectedTags.length === 0 &&
+          featured ? (
             <Link
               className={styles.featuredDocument}
               href={getDocumentHref(featured.slug, featured.language)}
@@ -155,10 +213,18 @@ export function BlogCollection({
                   {featured.category}
                 </span>
                 <LanguageFlags languages={featured.languages} />
+                {featured.part ? (
+                  <span className={styles.documentPart}>{featured.part}</span>
+                ) : null}
                 <h2 className={language === "vi" ? styles.vietnameseHeading : undefined}>
                   {featured.title}
                 </h2>
                 <p>{featured.summary}</p>
+                <div className={styles.documentTags} aria-label="Tags">
+                  {featured.tags.map((tag) => (
+                    <span key={tag}>#{tag}</span>
+                  ))}
+                </div>
                 <small>
                   {formatDocumentDate(featured.publishedAt, featured.language)}
                   <span>{featured.readingMinutes} min read</span>
@@ -176,6 +242,8 @@ export function BlogCollection({
             <h2>
               {query
                 ? `Results for “${query}”`
+                : selectedTags.length > 0
+                  ? selectedTags.map((tag) => `#${tag}`).join(", ")
                 : category === "All"
                   ? "All documents"
                   : category}
@@ -200,10 +268,24 @@ export function BlogCollection({
                       </span>
                       <LanguageFlags languages={document.languages} />
                     </div>
-                    <h3 className={language === "vi" ? styles.vietnameseHeading : undefined}>
+                    {document.part ? (
+                      <span className={styles.documentPart}>{document.part}</span>
+                    ) : null}
+                    <h3
+                      className={
+                        language === "vi"
+                          ? styles.vietnameseHeading
+                          : undefined
+                      }
+                    >
                       {document.title}
                     </h3>
                     <p>{document.summary}</p>
+                    <div className={styles.documentTags} aria-label="Tags">
+                      {document.tags.map((tag) => (
+                        <span key={tag}>#{tag}</span>
+                      ))}
+                    </div>
                   </div>
                   <div className={styles.rowMeta}>
                     <time dateTime={document.publishedAt}>
@@ -228,6 +310,7 @@ export function BlogCollection({
                 onClick={() => {
                   setQuery("");
                   setCategory("All");
+                  setSelectedTags([]);
                 }}
               >
                 Reset filters

@@ -14,8 +14,10 @@ export type BlogDocument = {
   language: DocumentLanguage;
   languages: DocumentLanguage[];
   title: string;
+  part?: string;
   summary: string;
   category: DocumentCategory;
+  tags: string[];
   publishedAt: string;
   updatedAt?: string;
   draft: boolean;
@@ -68,6 +70,30 @@ function assertDate(value: unknown, field: string, filename: string): string {
   return assertString(value, field, filename);
 }
 
+function assertTags(value: unknown, filename: string): string[] {
+  if (!Array.isArray(value) || value.length === 0) {
+    throw new Error(
+      `${filename}: frontmatter field "tags" must be a non-empty array.`,
+    );
+  }
+
+  const tags = value.map((tag, index) =>
+    assertString(tag, `tags[${index}]`, filename).toLowerCase(),
+  );
+
+  if (tags.some((tag) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag))) {
+    throw new Error(
+      `${filename}: tags must use lowercase letters, numbers, and single hyphens.`,
+    );
+  }
+
+  if (new Set(tags).size !== tags.length) {
+    throw new Error(`${filename}: tags must not contain duplicates.`);
+  }
+
+  return tags;
+}
+
 function parseDocument(filename: string, language: DocumentLanguage): ParsedDocument {
   const slug = filename.replace(/\.md$/, "");
   const relativePath = path.join(languageDirectories[language], filename);
@@ -93,8 +119,13 @@ function parseDocument(filename: string, language: DocumentLanguage): ParsedDocu
     slug,
     language,
     title: assertString(data.title, "title", relativePath),
+    part:
+      data.part === undefined
+        ? undefined
+        : assertString(data.part, "part", relativePath),
     summary: assertString(data.summary, "summary", relativePath),
     category,
+    tags: assertTags(data.tags, relativePath),
     publishedAt: assertDate(data.publishedAt, "publishedAt", relativePath),
     updatedAt: data.updatedAt ? assertDate(data.updatedAt, "updatedAt", relativePath) : undefined,
     draft: data.draft === true,
@@ -130,6 +161,17 @@ export function getDocuments(
     }
     versions.push(document);
     bySlug.set(document.slug, versions);
+  }
+
+  for (const [slug, versions] of bySlug) {
+    const [source, ...translations] = versions;
+    for (const translation of translations) {
+      if (translation.tags.join("\0") !== source.tags.join("\0")) {
+        throw new Error(
+          `${slug}: translations must use identical tags in the same order.`,
+        );
+      }
+    }
   }
 
   const visibleSlugs = new Set(bySlug.keys());
