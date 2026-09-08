@@ -41,3 +41,5 @@ Các bài viết cũng sẽ không đứng đơn lẻ một mình, những thu�
 ### Những dòng chữ đầu tiên cho một chặng đường dài
 
 Hoàn thành luôn tốt hơn hoàn hảo. Việc nhấn nút _Publish_ cho bài viết này là bước đi đầu tiên giúp tôi bước ra khỏi sự trì hoãn của chính mình. Cảm ơn bạn đã đọc đến những dòng cuối cùng này. Hành trình viết và lưu trữ chính thức bắt đầu từ hôm nay. Chặng đường phía trước vẫn còn rất nhiều kiến trúc cần dựng và nhiều câu chuyện cần kể.
+
+[Đọc tiếp: Chương 2. Tôi là ai giữa thế giới này →](/blog/who-am-i)

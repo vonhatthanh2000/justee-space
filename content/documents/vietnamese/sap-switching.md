@@ -1,7 +1,7 @@
 ---
-title: Chương 1. Từ 1 software engineer với kỹ năng  Database Optimizing và Blockchain, vì sao tôi lại muốn bắt đầu hành trình mới với SAP
+title: Chương 1. Từ Kỹ Sư Phần Mềm Đến Hành Trình Mới Với SAP
 part: Part 2. Cú chuyển mình trong sự nghiệp
-summary: Tôi đã có 5 năm kinh nghiệm trong Software Engineer, sao không tiếp tục mà quyết định thay đổi sang một ngách khác
+summary: Từ 1 software engineer với kỹ năng  Database Optimizing và Blockchain, vì sao tôi lại muốn bắt đầu hành trình mới với SAP
 category: Personal
 tags:
   - sap
@@ -25,3 +25,5 @@ Về ngách Software Engineer, cá nhân tôi thấy nhu cầu trên thị trư�
 Khi tìm hiểu thì tôi biết được SAP vẫn tồn tại và giữ vị thế số 1 trong thị trường phần mềm quản trị doanh nghiệp (ERP) nhờ vào việc giải quyết bài toán phức tạp nhất của các tập đoàn lớn, kết nối, đồng bộ các quy trình vận hành, thứ mà tôi chưa được trải nghiệm ở các công ty start up trước đó. Các khách hàng đang sử dụng SAP là những cái tên mà nói ra ai cũng từng sử dụng sản phẩm của họ hoặc ít nhất là đã nghe qua: PepsiCo, Samsung, LG, Toyota,… vâng, rất nhiều công ty nằm trong S&P 500.
 
 Họ vẫn sẽ dùng SAP vì chi phí chuyển đổi hệ thống là cực kỳ khổng lồ. Làm việc với SAP, tôi không chỉ làm việc kỹ thuật khô khan, mà ở đấy tôi có cơ hội hiểu hơn về nghiệp vụ, về các quy trình chuẩn quốc tế tối ưu trong tài chính, chuỗi cung ứng, sản xuất đã được đóng gói sẵn, giúp các doanh nghiệp áp dụng ngay tiêu chuẩn của các tập đoàn hàng đầu thế giới. Đồng thời, nền tảng kỹ thuật trước đó giúp tôi tiếp thu domain mới rất nhanh: không mất nhiều thời gian để hiểu về CSDL HANA, CDS Views hay xây dựng ứng dụng chuẩn RESTful (RAP).
+
+[Đọc tiếp: Chương 2. Đặt nền móng →](/blog/sap-foundation)
