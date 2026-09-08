@@ -196,7 +196,7 @@ export function getDocuments(
         unresolvedReferences: selected.connections.filter((target) => !visibleSlugs.has(target)),
       };
     })
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+    .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
 }
 
 export function getDocument(

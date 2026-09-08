@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react";
 import type { BlogDocument, DocumentCategory } from "@/lib/documents";
 import type { DocumentLanguage } from "@/lib/document-language";
+import { getGraphPositions } from "@/lib/graph-layout";
 import {
   documentLanguages,
   getDocumentHref,
@@ -28,15 +29,6 @@ import {
 import { BlogToolbar } from "./blog-toolbar";
 import { LanguageFlags } from "./language-flags";
 import styles from "@/app/blog/blog.module.css";
-
-const positions: Record<string, [number, number]> = {
-  "welcome-to-the-blog": [455, 294],
-  "why-this-blog-has-a-graph": [680, 205],
-  "building-useful-ai-systems": [775, 390],
-  "finding-database-bottlenecks": [620, 510],
-  "learning-in-public": [285, 445],
-  "photography-as-observation": [155, 280],
-};
 
 const categoryOptions: DocumentCategory[] = ["Personal", "Technical"];
 const minimumZoom = 0.65;
@@ -92,6 +84,11 @@ export function GraphExplorer({
   const visibleSlugs = useMemo(
     () => new Set(visibleDocuments.map((document) => document.slug)),
     [visibleDocuments],
+  );
+
+  const nodePositions = useMemo(
+    () => getGraphPositions(documents.map((document) => document.slug)),
+    [documents],
   );
 
   const edges = useMemo(() => {
@@ -321,8 +318,9 @@ export function GraphExplorer({
                   const startsAtSelection = selectedSlug === edge.to;
                   const fromSlug = startsAtSelection ? edge.to : edge.from;
                   const toSlug = startsAtSelection ? edge.from : edge.to;
-                  const from = positions[fromSlug] ?? [450, 310];
-                  const to = positions[toSlug] ?? [450, 310];
+                  const from = nodePositions.get(fromSlug);
+                  const to = nodePositions.get(toSlug);
+                  if (!from || !to) return null;
                   return (
                     <line
                       className={emphasized ? styles.edgeActive : styles.edge}
@@ -336,7 +334,7 @@ export function GraphExplorer({
                 })}
               </svg>
               {visibleDocuments.map((document, index) => {
-                const [x, y] = positions[document.slug] ?? [450, 310];
+                const [x, y] = nodePositions.get(document.slug) ?? [450, 310];
                 const isSelected = document.slug === selectedSlug;
                 const isNeighbor =
                   selected?.connections.includes(document.slug) ||
