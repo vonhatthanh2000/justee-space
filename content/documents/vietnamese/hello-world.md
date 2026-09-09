@@ -8,7 +8,7 @@ tags:
 publishedAt: 2026-05-09
 ---
 
-### Điều gì đã thôi thúc tôi bắt đầu viết blog này?
+## Điều gì đã thôi thúc tôi bắt đầu viết blog này?
 
 Tôi vốn là một người không giỏi trong việc thể hiện cảm xúc, không giỏi trong việc diễn đạt và trình bày ý tưởng. Và nhìn lại quá khứ, điều đó đã cản trở tôi có thể dấn thân vào làm một việc gì đó hết mình. Những ngày tháng ngồi ở giảng đường Đại học, nếu như Giảng viên không trực tiếp gọi tôi thì có lẽ tôi cũng chả bao giờ phát biểu ý kiến, có lẽ là do sợ sai hay bị chê cười… haha… đúng là đần, mình là người trả tiền sử dụng dịch vụ mà, sợ cái đ’ gì chứ.
 
@@ -18,7 +18,7 @@ Sản phẩm ở công ty đầu tiên mà tôi làm việc, cuối cùng cũng 
 
 Tính cách của developer thì phần lớn là hướng nội, chúng ta cứ âm thầm làm, nói thứ ngôn ngữ chỉ người trong ngành hiểu, và đôi khi bạn chỉ nói chuyện với những người ở trong circle của bạn. Sẽ có lúc bạn nhìn thấy những người có kỹ năng kém hơn bạn, nhưng họ lại có nhiều job hơn, lương cao hơn. Không nói ra nhưng trong lòng bạn vẫn thấy có điều gì đó sai trái, không công bằng. Không phải là do thế giới bất công đâu (à, có một chút). Tuy nhiên có một cái mà bạn không nhìn ra đó là họ giỏi hơn bạn về kỹ năng bán hàng, về kỹ năng trình bày vấn đề, họ giúp khách hàng hiểu giá trị công việc họ mang lại, hiểu rõ hơn về những gì họ đang làm. Và dĩ nhiên cơ hội tìm đến họ sẽ là cao hơn bạn. Khi bạn không biết giải thích, trình bày portfolio một cách rõ ràng, chả ai hiểu bạn đang làm gì cả.
 
-### Cảm xúc và câu chuyện: Thứ AI không thể viết thay tôi
+## Cảm xúc và câu chuyện: Thứ AI không thể viết thay tôi
 
 Tốc độ phát triển AI 1-2 năm trở lại đây thật kinh khủng. việc nó gợi ý code để tôi ấn "Tab... Tab" hoàn thành một function đã thấy viễn tưởng lắm rồi. Vậy mà bây giờ, chỉ cần gõ một câu prompt ngắn, AI có thể hoàn thành cả một chương trình đơn giản, hay viết đầy đủ function, testcase trong module. Tôi không muốn bản thân mình phụ thuộc AI, nhưng số lượng task thì tăng dần và deadline ngày càng gần, khiến việc nếu không dùng AI nhiều thì không thể hoàn thành được. Một nghịch lý khi sử dụng AI là, tôi có thể làm được rất nhiều việc trong thời gian ngắn, tuy nhiên cảm giác tự tin của tôi thì giảm dần khi phản xạ đầu tiên của tôi khi nhận được task bây giờ là... gõ prompt.
 
@@ -28,7 +28,7 @@ Nhưng có một điều không thể chối cãi là AI đã xoá bỏ kha khá
 
 AI có thể tạo thông tin, nhưng không thể có trải nghiệm hay cảm xúc thực tế. Viết là cách duy nhất để gửi gắm cá tính, tư duy và trải nghiệm cá nhân. Kỹ thuật tốt giúp tạo ra sản phẩm, nhưng khả năng nói chuyện (storytelling) và truyền tải giá trị qua ngôn từ mới là thứ giúp khách hàng thực sự thấu hiểu, trân trọng và nhìn thấy giá trị của sản phẩm/dịch vụ đó. Viết chính là quá trình sắp xếp lại suy nghĩ, giúp tư duy mạch lạc và sắc bén hơn.
 
-### Cấu trúc không gian - cách tôi phân bổ nội dung blog bằng 2 ngôn ngữ.
+## Cấu trúc không gian - cách tôi phân bổ nội dung blog bằng 2 ngôn ngữ.
 
 Tôi sẽ cố gắng để các bài viết có đầy đủ cả hai ngôn ngữ: Tiếng Việt và Tiếng Anh. Cách viết là tôi sẽ viết một bài trên một ngôn ngữ gốc, sau đó dịch sang ngôn ngữ còn lại. Việc này giúp tôi review lại bài viết thêm một lần và chỉnh sửa lại những lỗ hỏng.
 
@@ -38,7 +38,7 @@ Vậy tại sao lại có chuyện viết bằng Tiếng Anh rồi dịch lại 
 
 Các bài viết cũng sẽ không đứng đơn lẻ một mình, những thuật ngữ hay những bài viết liên quan sẽ tạo nên một liên kết cực kỳ bền vững, bạn có thể xem ở tab “Graph View”
 
-### Những dòng chữ đầu tiên cho một chặng đường dài
+## Những dòng chữ đầu tiên cho một chặng đường dài
 
 Hoàn thành luôn tốt hơn hoàn hảo. Việc nhấn nút _Publish_ cho bài viết này là bước đi đầu tiên giúp tôi bước ra khỏi sự trì hoãn của chính mình. Cảm ơn bạn đã đọc đến những dòng cuối cùng này. Hành trình viết và lưu trữ chính thức bắt đầu từ hôm nay. Chặng đường phía trước vẫn còn rất nhiều kiến trúc cần dựng và nhiều câu chuyện cần kể.
 
