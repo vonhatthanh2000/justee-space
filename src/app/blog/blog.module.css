@@ -1225,6 +1225,37 @@
   margin: 0 0 1.15rem;
 }
 
+.previewMarkdown ul,
+.markdownBody ul {
+  padding-inline-start: 1.5rem;
+  list-style: disc;
+}
+
+.previewMarkdown ol,
+.markdownBody ol {
+  padding-inline-start: 1.75rem;
+  list-style: decimal;
+}
+
+.previewMarkdown li > ul,
+.previewMarkdown li > ol,
+.markdownBody li > ul,
+.markdownBody li > ol {
+  margin: 0.35rem 0 0.55rem;
+  padding-inline-start: 1.4rem;
+}
+
+.previewMarkdown img,
+.markdownBody img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border: 1px solid var(--blog-line);
+  border-radius: 10px;
+}
+
 .previewMarkdown a {
   color: var(--blog-accent);
   text-decoration: underline;
@@ -1340,7 +1371,22 @@
 
 .readerCollection nav {
   display: grid;
+  gap: 1.35rem;
+}
+
+.readerPartGroup {
+  display: grid;
   gap: 0.15rem;
+}
+
+.readerPartLabel {
+  margin: 0 0 0.35rem;
+  color: var(--blog-faint);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  line-height: 1.45;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
 }
 
 .readerCollection nav a {

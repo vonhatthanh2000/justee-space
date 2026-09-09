@@ -16,6 +16,7 @@ import {
   isDocumentLanguage,
   slugifyHeading,
 } from "@/lib/document-language";
+import { prepareDocumentMarkdown } from "@/lib/document-markdown";
 import styles from "../blog.module.css";
 
 type DocumentPageProps = {
@@ -70,6 +71,19 @@ export default async function DocumentPage({
 
   const documentLanguage = document.language;
   const documents = getDocuments(document.language);
+  const documentsByPart = Array.from(
+    documents
+      .reduce((groups, item) => {
+        const part =
+          item.part ??
+          (document.language === "vi" ? "Các bài viết khác" : "Other documents");
+        const group = groups.get(part) ?? [];
+        group.push(item);
+        groups.set(part, group);
+        return groups;
+      }, new Map<string, typeof documents>())
+      .entries(),
+  );
   const relatedSlugs = Array.from(
     new Set([...document.connections, ...document.backlinks]),
   );
@@ -124,17 +138,24 @@ export default async function DocumentPage({
           </Link>
           <p className={styles.railLabel}>{copy.collection}</p>
           <nav aria-label={copy.navigation}>
-            {documents.map((item) => (
-              <Link
-                className={
-                  item.slug === document.slug ? styles.readerDocumentActive : ""
-                }
-                href={getDocumentHref(item.slug, item.language)}
-                key={item.slug}
-              >
-                <span className={styles[item.category.toLowerCase()]} />
-                {item.title}
-              </Link>
+            {documentsByPart.map(([part, partDocuments]) => (
+              <div className={styles.readerPartGroup} key={part}>
+                <p className={styles.readerPartLabel}>{part}</p>
+                {partDocuments.map((item) => (
+                  <Link
+                    className={
+                      item.slug === document.slug
+                        ? styles.readerDocumentActive
+                        : ""
+                    }
+                    href={getDocumentHref(item.slug, item.language)}
+                    key={item.slug}
+                  >
+                    <span className={styles[item.category.toLowerCase()]} />
+                    {item.title}
+                  </Link>
+                ))}
+              </div>
             ))}
           </nav>
         </aside>
@@ -232,7 +253,7 @@ export default async function DocumentPage({
                   ),
               }}
             >
-              {document.content}
+              {prepareDocumentMarkdown(document.content)}
             </ReactMarkdown>
           </div>
 

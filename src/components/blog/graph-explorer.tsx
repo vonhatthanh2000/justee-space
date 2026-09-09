@@ -26,6 +26,7 @@ import {
   getDocumentHref,
   getGraphHref,
 } from "@/lib/document-language";
+import { prepareDocumentMarkdown } from "@/lib/document-markdown";
 import { BlogToolbar } from "./blog-toolbar";
 import { LanguageFlags } from "./language-flags";
 import styles from "@/app/blog/blog.module.css";
@@ -474,7 +475,7 @@ export function GraphExplorer({
                   ),
                 }}
               >
-                {selected.previewContent}
+                {prepareDocumentMarkdown(selected.previewContent)}
               </ReactMarkdown>
               <p
                 className={styles.previewEllipsis}
