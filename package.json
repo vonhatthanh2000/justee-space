@@ -2,6 +2,9 @@
   "name": "thanh-personal-site",
   "version": "0.1.0",
   "private": true,
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
