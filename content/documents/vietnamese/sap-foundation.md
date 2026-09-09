@@ -47,22 +47,30 @@ _ERP (Enterprise Resource Planning - hệ thống quản trị_ nguồn lực do
 
 ERP là tên gọi chung cho dòng giải pháp của doanh nghiệp, **SAP** (Systems, Applications, and Products in Data Processing) là đại diện lớn nhất trong thị trường này. Công ty Đức được thành lập 1972 và là một trong những công ty phần mềm lớn nhất thế giới. Sức mạnh của SAP không chỉ nằm ở công cụ phần mềm, mà là các quy chuẩn đã được đúc kết từ hàng vạn doanh nghiệp lớn nhất thế giới. Điểm đặc trưng của SAP là **tính chặt chẽ và tích hợp cực cao**: Mọi hành động diễn ra ở một khâu đều kéo theo các bút toán hoặc luồng dữ liệu tự động ở các khâu khác, giúp doanh nghiệp kiểm soát rủi ro gần như tuyệt đối.
 
-### **Các mảnh ghép cốt lõi: Hệ sinh thái Module trong SAP**
+### Các mảnh ghép cốt lõi: Hệ sinh thái Module trong SAP
 
 Để quản lý toàn bộ một tập đoàn phức tạp, SAP chia nhỏ hệ thống thành các **Module (Phân hệ)** đảm nhận từng nghiệp vụ chuyên biệt, nhưng tất cả đều kết nối khăng khít với nhau:
 
-- **Quản trị Tài chính & Kiểm soát (Finance & Controlling):**
-  - **FI (Financial Accounting):** Quản lý sổ cái, công nợ phải thu/phải trả, tài sản cố định và lập báo cáo tài chính chuẩn mực.
-  - **CO (Controlling):** Quản lý chi phí nội bộ, tính giá thành sản phẩm và phân tích lợi nhuận.
-- **Chuỗi cung ứng & Vận hành (Supply Chain & Logistics):**
-  - **MM (Materials Management):** Quản lý Mua hàng (Procurement), định mức tồn kho và Nhập/Xuất/Kiểm kê Kho.
-  - **SD (Sales and Distribution):** Quản lý Bán hàng, từ báo giá, đơn đặt hàng (Sales Order), giao hàng đến xuất hóa đơn cho khách.
-  - **PP (Production Planning):** Quản lý lập kế hoạch và điều độ sản xuất, định mức nguyên vật liệu (BOM).
-- **Quản lý Tài sản & Chất lượng (Asset & Quality):**
-  - **PM (Plant Maintenance):** Quản lý bảo trì, bảo dưỡng máy móc thiết bị nhà xưởng.
-  - **QM (Quality Management):** Kiểm tra và quản lý chất lượng nguyên vật liệu đầu vào cũng như thành phẩm.
+### Quản trị Tài chính & Kiểm soát (Finance & Controlling):
+
+- **FI (Financial Accounting):** Quản lý sổ cái, công nợ phải thu/phải trả, tài sản cố định và lập báo cáo tài chính chuẩn mực.
+- **CO (Controlling):** Quản lý chi phí nội bộ, tính giá thành sản phẩm và phân tích lợi nhuận.
+
+### Chuỗi cung ứng & Vận hành (Supply Chain & Logistics):
+
+- **MM (Materials Management):** Quản lý Mua hàng (Procurement), định mức tồn kho và Nhập/Xuất/Kiểm kê Kho.
+- **SD (Sales and Distribution):** Quản lý Bán hàng, từ báo giá, đơn đặt hàng (Sales Order), giao hàng đến xuất hóa đơn cho khách.
+  **PP (Production Planning):** Quản lý lập kế hoạch và điều độ sản xuất, định mức nguyên vật liệu (BOM).
+
+### Quản lý Tài sản & Chất lượng (Asset & Quality):
+
+- **PM (Plant Maintenance):** Quản lý bảo trì, bảo dưỡng máy móc thiết bị nhà xưởng.
+- **QM (Quality Management):** Kiểm tra và quản lý chất lượng nguyên vật liệu đầu vào cũng như thành phẩm.
 - **Quản trị Nhân sự (Human Capital Management):**
-  - **HCM / SuccessFactors:** Quản lý sơ đồ tổ chức, chấm công, tính lương và tuyển dụng/đào tạo.
+
+### HCM / SuccessFactors:
+
+Quản lý sơ đồ tổ chức, chấm công, tính lương và tuyển dụng/đào tạo.
 
 ### Tập trung vào một mũi nhọn: tôi chọn bắt đầu SD
 
@@ -75,3 +83,5 @@ Phân hệ này gồm nghiệp vụ end-to-end cực kỳ sống động vì nó
 Khép lại những trang lý thuyết ban đầu. Tôi nhận ra SAP không chỉ là một phần mềm khô khan, nó chính là xương sống vận hành, dòng chảy kết nối các nguồn lực giúp một doanh nghiệp tồn tại và vận hành trơn tru.
 
 Để làm chủ một hệ thống đồ sộ như SAP, không có lối tắt nào ngoài việc bắt đầu từ những bước đi nhỏ nhất. Hiểu một phần tư duy nghiệp vụ chỉ là bước đầu, hành trình tiếp theo sẽ là trực tiếp thao tác trên hệ thống, tôi sẽ bắt đầu bằng việc khám phá các kỹ thuật cơ bản trong SAP ABAP.
+
+[Đọc tiếp: Chương 3. Hiểu rõ hơn về các khái niệm trong SAP →](/blog/sap-concepts)
