@@ -34,6 +34,7 @@ import styles from "@/app/blog/blog.module.css";
 const categoryOptions: DocumentCategory[] = ["Personal", "Technical"];
 const minimumZoom = 0.65;
 const maximumZoom = 1.6;
+const connectedNodeFollowStrength = 0.42;
 
 export function GraphExplorer({
   documents,
@@ -50,15 +51,29 @@ export function GraphExplorer({
     useState<DocumentCategory[]>(categoryOptions);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedSlug, setSelectedSlug] = useState(initialDocument ?? "");
+  const [movedNodePositions, setMovedNodePositions] = useState(
+    () => new Map<string, readonly [number, number]>(),
+  );
   const viewportRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef({ x: 0, y: 0, scale: 1 });
-  const dragRef = useRef<{
+  const viewportDragRef = useRef<{
     pointerId: number;
     startX: number;
     startY: number;
     originX: number;
     originY: number;
   } | null>(null);
+  const nodeDragRef = useRef<{
+    pointerId: number;
+    slug: string;
+    startClientX: number;
+    startClientY: number;
+    startPositions: Map<string, readonly [number, number]>;
+    graphUnitsPerPixelX: number;
+    graphUnitsPerPixelY: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressedNodeClickRef = useRef("");
 
   const tags = useMemo(
     () =>
@@ -87,10 +102,15 @@ export function GraphExplorer({
     [visibleDocuments],
   );
 
-  const nodePositions = useMemo(
-    () => getGraphPositions(documents.map((document) => document.slug)),
-    [documents],
-  );
+  const nodePositions = useMemo(() => {
+    const positions = getGraphPositions(
+      documents.map((document) => document.slug),
+    );
+    for (const [slug, position] of movedNodePositions) {
+      if (positions.has(slug)) positions.set(slug, position);
+    }
+    return positions;
+  }, [documents, movedNodePositions]);
 
   const edges = useMemo(() => {
     const seen = new Set<string>();
@@ -183,7 +203,7 @@ export function GraphExplorer({
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
     event.currentTarget.dataset.dragging = "true";
-    dragRef.current = {
+    viewportDragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
@@ -193,7 +213,7 @@ export function GraphExplorer({
   }
 
   function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
-    const drag = dragRef.current;
+    const drag = viewportDragRef.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
 
     applyTransform({
@@ -204,12 +224,111 @@ export function GraphExplorer({
   }
 
   function finishDragging(event: ReactPointerEvent<HTMLDivElement>) {
-    if (dragRef.current?.pointerId !== event.pointerId) return;
-    dragRef.current = null;
+    if (viewportDragRef.current?.pointerId !== event.pointerId) return;
+    viewportDragRef.current = null;
     event.currentTarget.dataset.dragging = "false";
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
+  }
+
+  function handleNodePointerDown(
+    event: ReactPointerEvent<HTMLButtonElement>,
+    slug: string,
+  ) {
+    if (event.button !== 0) return;
+
+    const viewport = viewportRef.current;
+    const position = nodePositions.get(slug);
+    if (!viewport || !position) return;
+
+    const document = documents.find((item) => item.slug === slug);
+    const connectedSlugs = new Set([
+      slug,
+      ...(document?.connections ?? []),
+      ...(document?.backlinks ?? []),
+    ]);
+    const startPositions = new Map<string, readonly [number, number]>();
+    for (const connectedSlug of connectedSlugs) {
+      const connectedPosition = nodePositions.get(connectedSlug);
+      if (connectedPosition) {
+        startPositions.set(connectedSlug, connectedPosition);
+      }
+    }
+
+    const rect = viewport.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.dataset.dragging = "true";
+    nodeDragRef.current = {
+      pointerId: event.pointerId,
+      slug,
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      startPositions,
+      graphUnitsPerPixelX: 900 / rect.width,
+      graphUnitsPerPixelY: 620 / rect.height,
+      moved: false,
+    };
+  }
+
+  function handleNodePointerMove(event: ReactPointerEvent<HTMLButtonElement>) {
+    const drag = nodeDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - drag.startClientX;
+    const deltaY = event.clientY - drag.startClientY;
+    if (!drag.moved && Math.hypot(deltaX, deltaY) < 4) return;
+
+    drag.moved = true;
+    event.preventDefault();
+    event.stopPropagation();
+    setMovedNodePositions((current) => {
+      const next = new Map(current);
+      for (const [slug, startPosition] of drag.startPositions) {
+        const followStrength =
+          slug === drag.slug ? 1 : connectedNodeFollowStrength;
+        next.set(slug, [
+          startPosition[0] + deltaX * drag.graphUnitsPerPixelX * followStrength,
+          startPosition[1] + deltaY * drag.graphUnitsPerPixelY * followStrength,
+        ]);
+      }
+      return next;
+    });
+  }
+
+  function finishNodeDragging(
+    event: ReactPointerEvent<HTMLButtonElement>,
+    cancelled = false,
+  ) {
+    const drag = nodeDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    event.stopPropagation();
+    nodeDragRef.current = null;
+    event.currentTarget.dataset.dragging = "false";
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    if (drag.moved && !cancelled) {
+      suppressedNodeClickRef.current = drag.slug;
+      window.setTimeout(() => {
+        if (suppressedNodeClickRef.current === drag.slug) {
+          suppressedNodeClickRef.current = "";
+        }
+      }, 0);
+    }
+  }
+
+  function handleNodeClick(slug: string) {
+    if (suppressedNodeClickRef.current === slug) {
+      suppressedNodeClickRef.current = "";
+      return;
+    }
+    selectDocument(slug);
   }
 
   return (
@@ -251,7 +370,9 @@ export function GraphExplorer({
                   key={option}
                   aria-current={language === option ? "page" : undefined}
                 >
-                  <span aria-hidden="true">{documentLanguages[option].flag}</span>
+                  <span aria-hidden="true">
+                    {documentLanguages[option].flag}
+                  </span>
                   {documentLanguages[option].shortLabel}
                 </Link>
               ))}
@@ -299,7 +420,7 @@ export function GraphExplorer({
         <div
           className={styles.graphStage}
           role="region"
-          aria-label="Interactive document graph. Drag to move and scroll to zoom."
+          aria-label="Interactive document graph. Drag nodes to rearrange them, drag the canvas to move, and scroll to zoom."
           onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -353,11 +474,21 @@ export function GraphExplorer({
                     type="button"
                     data-graph-node
                     key={document.slug}
-                    onClick={() => selectDocument(document.slug)}
+                    onClick={() => handleNodeClick(document.slug)}
+                    onPointerDown={(event) =>
+                      handleNodePointerDown(event, document.slug)
+                    }
+                    onPointerMove={handleNodePointerMove}
+                    onPointerUp={finishNodeDragging}
+                    onPointerCancel={(event) => finishNodeDragging(event, true)}
                     aria-pressed={isSelected}
                   >
                     <span aria-hidden="true" />
-                    <strong className={language === "vi" ? styles.vietnameseHeading : undefined}>
+                    <strong
+                      className={
+                        language === "vi" ? styles.vietnameseHeading : undefined
+                      }
+                    >
                       {document.title}
                     </strong>
                   </button>
@@ -391,7 +522,10 @@ export function GraphExplorer({
             </span>
           </div>
 
-          <p className={styles.graphHint}>Drag to move. Scroll to zoom.</p>
+          <p className={styles.graphHint}>
+            Drag a node to move its connections. Drag canvas to move. Scroll to
+            zoom.
+          </p>
 
           <div className={styles.zoomControls} aria-label="Graph zoom controls">
             <button
@@ -440,7 +574,11 @@ export function GraphExplorer({
             {selected.part ? (
               <span className={styles.documentPart}>{selected.part}</span>
             ) : null}
-            <h2 className={language === "vi" ? styles.vietnameseHeading : undefined}>
+            <h2
+              className={
+                language === "vi" ? styles.vietnameseHeading : undefined
+              }
+            >
               {selected.title}
             </h2>
             <p className={styles.previewSummary}>{selected.summary}</p>

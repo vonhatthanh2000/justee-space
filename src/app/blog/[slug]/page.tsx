@@ -12,6 +12,7 @@ import { getDocument, getDocuments } from "@/lib/documents";
 import {
   documentLanguages,
   formatDocumentDate,
+  getBlogHref,
   getDocumentHref,
   isDocumentLanguage,
   slugifyHeading,
@@ -76,7 +77,9 @@ export default async function DocumentPage({
       .reduce((groups, item) => {
         const part =
           item.part ??
-          (document.language === "vi" ? "Các bài viết khác" : "Other documents");
+          (document.language === "vi"
+            ? "Các bài viết khác"
+            : "Other documents");
         const group = groups.get(part) ?? [];
         group.push(item);
         groups.set(part, group);
@@ -123,7 +126,9 @@ export default async function DocumentPage({
   function localizeInternalHref(href: string): string {
     const [path, hash] = href.split("#");
     const targetSlug = path.replace("/blog/", "").split("?")[0];
-    const localizedPath = getDocumentHref(targetSlug, documentLanguage);
+    const targetDocument = documents.find((item) => item.slug === targetSlug);
+    const targetLanguage = targetDocument?.language ?? documentLanguage;
+    const localizedPath = getDocumentHref(targetSlug, targetLanguage);
     return hash ? `${localizedPath}#${hash}` : localizedPath;
   }
 
@@ -133,7 +138,10 @@ export default async function DocumentPage({
       <BlogToolbar activeMode="documents" language={document.language} />
       <div className={styles.readerLayout}>
         <aside className={styles.readerCollection}>
-          <Link className={styles.backToCollection} href="/blog">
+          <Link
+            className={styles.backToCollection}
+            href={getBlogHref(document.language)}
+          >
             <ArrowLeft size={15} /> {copy.allDocuments}
           </Link>
           <p className={styles.railLabel}>{copy.collection}</p>

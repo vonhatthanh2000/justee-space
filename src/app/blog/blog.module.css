@@ -997,12 +997,19 @@
   border: 0;
   color: var(--blog-ink);
   font: inherit;
-  cursor: pointer;
+  cursor: grab;
+  touch-action: none;
   background: transparent;
   translate: -50% -50%;
   transition:
     opacity 180ms ease,
     transform 180ms ease;
+}
+
+.graphNode[data-dragging="true"] {
+  z-index: 2;
+  cursor: grabbing;
+  user-select: none;
 }
 
 .graphNode:hover {
