@@ -16,7 +16,22 @@ Hiện tại SAP đang đẩy mạnh xu hướng hiện đại hóa với nền 
 Về tài liệu chính thức, các bạn có thể xem tài liệu gốc của SAP: https://learning.sap.com/courses/learn-the-basics-of-abap-programming-on-sap-btp/introducing-abap-syntax_b815682e-9a5e-4372-a021-66ea71208746
 Ở bài viết này, tôi sẽ viết như một bảng tổng hợp nhanh lại kiến thức.
 
-## ABAP Basic Statements
+### ABAP Basic Statements
 
 [Đọc tiếp: ABAP Basic Statements →](/blog/sap-abap-1)
+
+### ABAP Data Dictionary
+
 [Đọc tiếp: ABAP Data Dictionary →](/blog/sap-abap-2)
+
+### ABAP Open SQL
+
+[Đọc tiếp: ABAP Open SQL →](/blog/sap-abap-3)
+
+### ABAP Internal Table
+
+[Đọc tiếp: ABAP Internal Table →](/blog/sap-abap-4)
+
+### ABAP Modularization
+
+[Đọc tiếp: ABAP Modularization →](/blog/sap-abap-5)

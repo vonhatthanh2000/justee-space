@@ -37,3 +37,5 @@ Hay nói cách khác: Khi lột bỏ hết những danh xưng nghề nghiệp, b
 Đi qua nhiều lĩnh vực, tôi hiểu rằng mọi trải nghiệm đều bình đẳng như nhau. Gõ một dòng code hay bào một miếng gỗ phẳng, gảy một nhịp đàn hay bắt lấy một khung hình đẹp... mỗi khoảnh khắc đều mang lại cho tôi những rung động khác biệt. Tôi chọn không giới hạn mình trong bất kỳ định nghĩa nào, chỉ chọn tận hưởng cuộc đời này bằng mọi giác quan.
 
 Vì thế, cứ gọi tôi là Thanh – vậy là đủ.
+
+[Đọc tiếp: Chương 3. Không có gì thay đổi nếu không có gì thay đội →](/blog/nothing-change-if-nothing-change)

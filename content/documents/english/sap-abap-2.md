@@ -9,10 +9,6 @@ tags:
 publishedAt: 2026-06-17
 ---
 
-# TECHNICAL REFERENCE DOCUMENTATION: SAP ABAP DATA DICTIONARY (DDIC)
-
----
-
 ## 1. System Overview & Architecture
 
 The **ABAP Data Dictionary (DDIC)**, managed via Transaction Code **`SE11`**, is an integrated database management framework embedded within the SAP ABAP application server. It acts as a database abstraction layer positioned between SAP application programs and the underlying Relational Database Management System (RDBMS) such as Oracle or Microsoft SQL Server.
