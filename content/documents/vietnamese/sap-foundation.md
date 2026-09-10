@@ -66,11 +66,10 @@ ERP là tên gọi chung cho dòng giải pháp của doanh nghiệp, **SAP** (S
 
 - **PM (Plant Maintenance):** Quản lý bảo trì, bảo dưỡng máy móc thiết bị nhà xưởng.
 - **QM (Quality Management):** Kiểm tra và quản lý chất lượng nguyên vật liệu đầu vào cũng như thành phẩm.
-- **Quản trị Nhân sự (Human Capital Management):**
 
-### HCM / SuccessFactors:
+### Quản trị Nhân sự (Human Capital Management):
 
-Quản lý sơ đồ tổ chức, chấm công, tính lương và tuyển dụng/đào tạo.
+- **HCM / SuccessFactors:** Quản lý sơ đồ tổ chức, chấm công, tính lương và tuyển dụng/đào tạo.
 
 ### Tập trung vào một mũi nhọn: tôi chọn bắt đầu SD
 

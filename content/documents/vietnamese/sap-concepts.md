@@ -45,7 +45,9 @@ publishedAt: 2026-06-01
 4. **Hai vùng bộ nhớ đệm quan trọng trong Work Process:**
    - **User Context:** Là vùng bộ nhớ đệm lưu trữ thông tin về người dùng đang làm việc (User ID, mật khẩu, thời gian đăng nhập, chương trình đang chạy, số lượng cửa sổ đang mở). Vùng bộ nhớ này chỉ tự động giải phóng khi người dùng **Thoát/Log out** khỏi tài khoản SAP.
    - **Roll Area:** Là vùng bộ nhớ đệm nhỏ dành riêng cho việc thực thi chương trình. Khi chương trình ABAP bắt đầu chạy, Roll Area được cấp phát để lưu trữ dữ liệu tính toán tạm thời và sẽ **giải phóng ngay lập tức** khi chương trình kết thúc.
-   
+
 ### Quy trình xử lý hoàn chỉnh của một Request:
 
 **Presentation Layer** _(Gửi request)_ $\rightarrow$ **Dispatcher** $\rightarrow$ **Queue (FIFO)** $\rightarrow$ **Work Process** _(Xử lý kết hợp với_ **User Context** _&_ **Roll Area**_)_ $\leftrightarrow$ **Database Layer** _(Truy xuất/Lưu data)_ $\rightarrow$ Trả kết quả ngược lại **Presentation Layer**
+
+[Đọc tiếp: Chương 4. ABAP Fundamentals: Bước Chân Vào Tầng Xử Lý Logic →](/blog/sap-abap)
