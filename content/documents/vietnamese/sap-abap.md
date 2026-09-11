@@ -35,3 +35,11 @@ Về tài liệu chính thức, các bạn có thể xem tài liệu gốc của
 ### ABAP Modularization
 
 [Đọc tiếp: ABAP Modularization →](/blog/sap-abap-5)
+
+### ABAP Classical Report
+
+[Đọc tiếp: ABAP Classical Report →](/blog/sap-abap-6)
+
+### ABAP ALV Report
+
+[Đọc tiếp: ABAP ALV Report →](/blog/sap-abap-7)

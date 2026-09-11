@@ -1,5 +1,5 @@
 ---
-title: ABAP Data Dictionary
+title: ABAP Open SQL
 part: ABAP
 summary: ABAP Open SQL
 category: Technical

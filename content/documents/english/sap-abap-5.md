@@ -6,7 +6,7 @@ category: Technical
 tags:
   - sap
   - abap
-publishedAt: 2026-06-06
+publishedAt: 2026-07-06
 ---
 
 ## 1. The Four Levels of Modularization
