@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/header";
 import { BlogCollection } from "@/components/blog/blog-collection";
+import { LiveChatWidget } from "@/components/blog/live-chat-widget";
 import { getDocuments } from "@/lib/documents";
 import { isDocumentLanguage } from "@/lib/document-language";
 import styles from "./blog.module.css";
@@ -24,6 +25,7 @@ export default async function BlogPage({
     <main className={styles.blogRoot}>
       <Header />
       <BlogCollection documents={documents} language={language} />
+      <LiveChatWidget />
     </main>
   );
 }
