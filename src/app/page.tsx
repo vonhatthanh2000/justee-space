@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CvDownload } from "@/components/cv-download";
 import { Header } from "@/components/header";
 import { OrbitMark } from "@/components/orbit-mark";
 
@@ -158,6 +159,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <CvDownload />
 
       <footer className="footer section-shell">
         <div>

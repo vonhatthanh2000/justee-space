@@ -14,6 +14,7 @@ import { experience } from "../../../content/coding/experience";
 import { skills } from "../../../content/coding/skills";
 import { ExperienceSection } from "@/components/coding/experience-section";
 import { ProjectsSection } from "@/components/coding/projects-section";
+import { CvDownload } from "@/components/cv-download";
 import { Header } from "@/components/header";
 
 export const metadata: Metadata = {
@@ -128,6 +129,8 @@ export default function CodingPage() {
           </a>
         </div>
       </section>
+
+      <CvDownload />
     </main>
   );
 }

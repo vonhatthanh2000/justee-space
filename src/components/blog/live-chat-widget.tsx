@@ -41,7 +41,7 @@ const initialMessages: ChatMessage[] = [
     id: 1,
     role: "assistant",
     status: "complete",
-    text: "Hi, ask me anything about Thanh's writing.",
+    text: "Hi, ask me anything about Thanh's writing. You can ask in English or Vietnamese.",
     sources: [],
   },
 ];
