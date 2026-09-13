@@ -87,7 +87,7 @@ export const personal_project: readonly Project[] = [
     organization: "Self-employed",
     timeline: "May 2026 — Present",
     description:
-      "Turns phone selfies into print-ready ID photos with AI (background, outfit, sizing)",
+      "Turns phone selfies into print-ready ID photos with AI (background, outfit)",
     role: [
       "Fullstack for this project",
       "Support using all image type (.jpg, .png, .heic)",

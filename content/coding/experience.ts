@@ -5,23 +5,28 @@ export const experience: ExperienceEntry[] = [
   {
     id: 1,
     period: "Mar 2026 — Present",
-    title: "Web3 Backend Engineer",
+    title: "Fullstack Engineer",
     organization: "Self-employed",
     description: {
+      "SAP knowledge blog": [
+        "Build a system to manage the blog and the articles",
+        "RAG System to answer the questions based on the articles",
+      ],
       "TAOANHTHE.ONLINE": [
-        "Fullstack for this project",
+        "Fullstack in this project",
         "Support using all image type (.jpg, .png, .heic)",
         "Build AI model (gemini, banana nano 2.0) to generate ID card",
         "Fast Checkout screen without Registering an account",
       ],
       "EPro - English Learning Platform": [
-        "Fullstack for this project",
+        "Fullstack in this project",
         "Tuning AI model to correct your pronunciation and grammar based on IELTS exam",
         "Implement a system to track your progress and history",
         "Correct the sentence natually and analyze the result to guide user to improve",
       ],
     },
     techstack: {
+      "SAP knowledge blog": ["ABAP", "RAP", "SD", "NextJs, Tailwind"],
       "TAOANHTHE.ONLINE": [
         "Next.js",
         "Tailwind CSS",
@@ -67,6 +72,21 @@ export const experience: ExperienceEntry[] = [
   },
   {
     id: 3,
+    period: "Apr 2025 - Aug 2025",
+    title: "AI Coding Trainer - Freelancer",
+    organization: "Scale AI",
+    description: {
+      "AI Coding Trainer": [
+        "Training coding ability for hiend LLM (GPT, Claude) in Vietnamese localization",
+        "Improve Truthfulness, Coding Syntax and Vietnamese localization issue for these LLM",
+      ],
+    },
+    techstack: {
+      "AI Coding Trainer": ["Go", "NodeJs", "LLM", "GPT", "Claude"],
+    },
+  },
+  {
+    id: 4,
     period: "Jun 2024 — Dec 2025",
     title: "Blockchain Backend Engineer",
     organization: "Unicorn Ultra Labs",
@@ -93,7 +113,7 @@ export const experience: ExperienceEntry[] = [
     },
   },
   {
-    id: 4,
+    id: 5,
     period: "Sep 2022 — Apr 2024",
     title: "Software Engineer",
     organization: "Codelight Co",
