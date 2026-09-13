@@ -11,6 +11,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import styles from "@/app/blog/blog.module.css";
+import { ChatMessageMarkdown } from "@/components/blog/chat-message-markdown";
 
 type ChatSource = {
   title: string;
@@ -413,6 +414,10 @@ export function LiveChatWidget() {
                         </small>
                       ) : null}
                     </div>
+                  </div>
+                ) : message.role === "assistant" && message.text ? (
+                  <div className={styles.chatMarkdown}>
+                    <ChatMessageMarkdown>{message.text}</ChatMessageMarkdown>
                   </div>
                 ) : (
                   <p
