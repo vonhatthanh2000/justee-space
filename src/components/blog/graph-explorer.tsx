@@ -20,7 +20,11 @@ import {
 } from "@phosphor-icons/react";
 import type { BlogDocument, DocumentCategory } from "@/lib/documents";
 import type { DocumentLanguage } from "@/lib/document-language";
-import { getGraphPositions } from "@/lib/graph-layout";
+import {
+  getGraphPositions,
+  graphHeight,
+  graphWidth,
+} from "@/lib/graph-layout";
 import {
   documentLanguages,
   getDocumentHref,
@@ -104,13 +108,16 @@ export function GraphExplorer({
 
   const nodePositions = useMemo(() => {
     const positions = getGraphPositions(
-      documents.map((document) => document.slug),
+      visibleDocuments.map((document) => ({
+        slug: document.slug,
+        connections: document.connections,
+      })),
     );
     for (const [slug, position] of movedNodePositions) {
       if (positions.has(slug)) positions.set(slug, position);
     }
     return positions;
-  }, [documents, movedNodePositions]);
+  }, [movedNodePositions, visibleDocuments]);
 
   const edges = useMemo(() => {
     const seen = new Set<string>();
@@ -268,8 +275,8 @@ export function GraphExplorer({
       startClientX: event.clientX,
       startClientY: event.clientY,
       startPositions,
-      graphUnitsPerPixelX: 900 / rect.width,
-      graphUnitsPerPixelY: 620 / rect.height,
+      graphUnitsPerPixelX: graphWidth / rect.width,
+      graphUnitsPerPixelY: graphHeight / rect.height,
       moved: false,
     };
   }
@@ -430,7 +437,7 @@ export function GraphExplorer({
           {visibleDocuments.length ? (
             <div className={styles.graphViewport} ref={viewportRef}>
               <svg
-                viewBox="0 0 900 620"
+                viewBox={`0 0 ${graphWidth} ${graphHeight}`}
                 role="img"
                 aria-label="Connections between blog documents"
               >
@@ -456,7 +463,10 @@ export function GraphExplorer({
                 })}
               </svg>
               {visibleDocuments.map((document, index) => {
-                const [x, y] = nodePositions.get(document.slug) ?? [450, 310];
+                const [x, y] = nodePositions.get(document.slug) ?? [
+                  graphWidth / 2,
+                  graphHeight / 2,
+                ];
                 const isSelected = document.slug === selectedSlug;
                 const isNeighbor =
                   selected?.connections.includes(document.slug) ||
@@ -466,8 +476,8 @@ export function GraphExplorer({
                     className={`${styles.graphNode} ${styles[document.category.toLowerCase()]} ${isSelected ? styles.nodeSelected : ""} ${selected && !isSelected && !isNeighbor ? styles.nodeDimmed : ""}`}
                     style={
                       {
-                        left: `${(x / 900) * 100}%`,
-                        top: `${(y / 620) * 100}%`,
+                        left: `${(x / graphWidth) * 100}%`,
+                        top: `${(y / graphHeight) * 100}%`,
                         "--node-delay": `${250 + index * 70}ms`,
                       } as CSSProperties
                     }
