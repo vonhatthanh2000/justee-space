@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { Header } from "@/components/header";
 import { BlogToolbar } from "@/components/blog/blog-toolbar";
+import { LiveChatWidget } from "@/components/blog/live-chat-widget";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { LanguageFlags } from "@/components/blog/language-flags";
 import { getDocument, getDocuments } from "@/lib/documents";
@@ -319,6 +320,7 @@ export default async function DocumentPage({
           </div>
         </aside>
       </div>
+      <LiveChatWidget />
     </main>
   );
 }

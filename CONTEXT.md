@@ -1,6 +1,6 @@
-# Personal Publishing
+# Personal Site
 
-The personal publishing context defines the written material on the site and the relationships readers can explore between pieces of writing.
+The personal site context defines Thanh's published writing and the professional material shared with readers and recruiters.
 
 ## Language
 
@@ -39,3 +39,17 @@ _Avoid_: Modal, detail page, quick view
 **Draft**:
 A Document intentionally excluded from the public Blog until it is ready to publish.
 _Avoid_: Private document, unpublished page
+
+## Career presentation
+
+**Candidate Profile**:
+A standalone, English-first career presentation shared directly with recruiters for SAP Technical Consultant opportunities. It leads with SAP learning and uses Thanh's broader software-engineering experience as supporting evidence.
+_Avoid_: SAP proposal, job-specific application, cover-letter page
+
+**Target Role**:
+SAP Technical Consultant, expressed generally so the Candidate Profile can be sent to multiple companies without naming a particular opening.
+_Avoid_: SAP developer, company-specific role, job title placeholder
+
+**SAP Learning & Practice**:
+Thanh's structured self-learning, documentation, and general understanding of SAP processes and the important components of ABAP, RAP, and SD. It is evidence of preparation for the Target Role, not a claim of formal training, certification, or commercial SAP delivery.
+_Avoid_: Formal SAP training, SAP employment, SAP consulting experience, SAP certification
