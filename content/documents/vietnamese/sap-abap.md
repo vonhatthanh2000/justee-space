@@ -43,3 +43,7 @@ Về tài liệu chính thức, các bạn có thể xem tài liệu gốc của
 ### ABAP ALV Report
 
 [Đọc tiếp: ABAP ALV Report →](/blog/sap-abap-7)
+
+### Đi sâu vào bài toán thực tế - SD Module
+
+[Đọc tiếp: Chương 5. SD Module →](/blog/sap-sd)

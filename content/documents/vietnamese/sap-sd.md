@@ -27,3 +27,7 @@ Nghiệp vụ SD xoay quanh chuỗi quy trình kinh điển gọi là Order-to-C
 ### Fulfillment, Posting, and Integration
 
 [Đọc tiếp: Fulfillment, Posting, and Integration →](/blog/sap-sd-4-fulfilment-posting-integration)
+
+### SAP RAP
+
+[Đọc tiếp: SAP RAP →](/blog/sap-rap)

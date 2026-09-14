@@ -1,5 +1,5 @@
 ---
-title: SAP SD Organozational and Master Data
+title: SAP SD Organizational and Master Data
 part: ABAP
 summary: This document explains how SAP Sales and Distribution combines organizational configuration and reusable master data to establish a valid processing context for a sales transaction. It connects business meaning to classic persistence landmarks, maintenance transactions, runtime determination, diagnostic technique, RAP modeling, and clean-core boundaries.
 category: Technical
