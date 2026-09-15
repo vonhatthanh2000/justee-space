@@ -68,6 +68,17 @@
   font-family: var(--sans);
 }
 
+.chatWidgetResume {
+  --blog-surface-solid: #ffffff;
+  --blog-ink: #0f2635;
+  --blog-muted: #4b6575;
+  --blog-faint: #6b7f8c;
+  --blog-line: rgba(25, 83, 119, 0.17);
+  --blog-line-strong: rgba(25, 83, 119, 0.28);
+  --blog-accent: #1675ad;
+  position: fixed;
+}
+
 .chatLauncher {
   display: inline-flex;
   width: 48px;
@@ -86,6 +97,15 @@
     background 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
+}
+
+.chatLauncherWithText {
+  width: auto;
+  gap: 0.5rem;
+  padding-inline: 0.85rem;
+  font-size: 0.76rem;
+  font-weight: 680;
+  white-space: nowrap;
 }
 
 .chatLauncher:hover {

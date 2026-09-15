@@ -37,15 +37,15 @@ type ChatMessage = {
 type SsePayload = Record<string, unknown>;
 
 const SESSION_STORAGE_KEY = "justbot-session-id";
-const initialMessages: ChatMessage[] = [
-  {
-    id: 1,
-    role: "assistant",
-    status: "complete",
-    text: "Hi, ask me anything about Thanh's writing. You can ask in English or Vietnamese.",
-    sources: [],
-  },
-];
+const defaultWelcomeMessage =
+  "Hi, ask me anything about Thanh's writing. You can ask in English or Vietnamese.";
+
+type LiveChatWidgetProps = {
+  launcherText?: string;
+  subtitle?: string;
+  variant?: "blog" | "resume";
+  welcomeMessage?: string;
+};
 
 function getStoredSessionId() {
   if (typeof window === "undefined") return null;
@@ -83,10 +83,23 @@ function getResponseError(payload: unknown, fallback: string) {
   return fallback;
 }
 
-export function LiveChatWidget() {
+export function LiveChatWidget({
+  launcherText,
+  subtitle = "Ask about Thanh's notes",
+  variant = "blog",
+  welcomeMessage = defaultWelcomeMessage,
+}: LiveChatWidgetProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [
+    {
+      id: 1,
+      role: "assistant",
+      status: "complete",
+      text: welcomeMessage,
+      sources: [],
+    },
+  ]);
   const [sessionId, setSessionId] = useState<string | null>(getStoredSessionId);
   const titleId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -353,7 +366,9 @@ export function LiveChatWidget() {
   }
 
   return (
-    <div className={styles.chatWidget}>
+    <div
+      className={`${styles.chatWidget} ${variant === "resume" ? styles.chatWidgetResume : ""}`}
+    >
       {isOpen ? (
         <section
           id={`${titleId}-panel`}
@@ -370,7 +385,7 @@ export function LiveChatWidget() {
               </span>
               <div>
                 <h2 id={titleId}>Chat with JustBot</h2>
-                <p>Ask about Thanh&apos;s notes</p>
+                <p>{subtitle}</p>
               </div>
             </div>
             <button
@@ -495,14 +510,15 @@ export function LiveChatWidget() {
       {!isOpen ? (
         <button
           ref={launcherRef}
-          className={styles.chatLauncher}
+          className={`${styles.chatLauncher} ${launcherText ? styles.chatLauncherWithText : ""}`}
           type="button"
           onClick={() => setIsOpen(true)}
           aria-expanded="false"
           aria-controls={`${titleId}-panel`}
-          aria-label="Chat with JustBot"
+          aria-label={launcherText ?? "Chat with JustBot"}
         >
           <ChatCircleDots size={21} weight="regular" aria-hidden="true" />
+          {launcherText ? <span>{launcherText}</span> : null}
         </button>
       ) : null}
     </div>
