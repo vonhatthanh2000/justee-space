@@ -14,8 +14,24 @@ import {
   personal_project,
 } from "../../../content/coding/projects";
 import type { Project } from "../../../content/coding/types";
-import { sapProposal } from "../../../content/sap-proposal";
-import styles from "./sap-proposal.module.css";
+import { sapResume } from "../../../content/sap-resume";
+import { LiveChatWidget } from "../../components/blog/live-chat-widget";
+import styles from "./sap-resume.module.css";
+import { VideoCarousel } from "./video-carousel";
+
+const sapKeywords = new Set(["ABAP", "RAP", "SAP SD", "FI/CO", "MM"]);
+
+function EmphasizedSapKeywords({ text }: { text: string }) {
+  return text.split(/\b(SAP SD|ABAP|RAP|FI\/CO|MM)\b/g).map((part, index) =>
+    sapKeywords.has(part) ? (
+      <strong className={styles.sapKeyword} key={`${part}-${index}`}>
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
+  );
+}
 
 export const metadata: Metadata = {
   title: "SAP Technical Consultant Profile | Thanh Vo",
@@ -86,20 +102,20 @@ function ProjectCard({
 function ContactActions() {
   return (
     <nav className={styles.contactActions} aria-label="Contact Thanh Vo">
-      <a aria-label="Email Thanh Vo" href={`mailto:${sapProposal.email}`}>
+      <a aria-label="Email Thanh Vo" href={`mailto:${sapResume.email}`}>
         <EnvelopeSimple aria-hidden="true" size={18} weight="regular" />
         <span>Email</span>
       </a>
       <a
         aria-label="View Thanh Vo on LinkedIn"
-        href={sapProposal.linkedIn}
+        href={sapResume.linkedIn}
         rel="noreferrer"
         target="_blank"
       >
         <LinkedinLogo aria-hidden="true" size={18} weight="regular" />
         <span>LinkedIn</span>
       </a>
-      <a className={styles.primaryAction} download href={sapProposal.cvHref}>
+      <a className={styles.primaryAction} download href={sapResume.cvHref}>
         <DownloadSimple aria-hidden="true" size={18} weight="regular" />
         <span>Download CV</span>
       </a>
@@ -112,7 +128,7 @@ export default function SapProposalPage() {
     <main className={styles.page}>
       <header className={styles.header}>
         <Link className={styles.name} href="/" aria-label="Thanh Vo, home">
-          {sapProposal.name}
+          {sapResume.name}
         </Link>
         <ContactActions />
       </header>
@@ -121,23 +137,25 @@ export default function SapProposalPage() {
         <section className={styles.profile} aria-labelledby="profile-title">
           <div className={styles.profileCopy}>
             <p className={styles.eyebrow}>Candidate profile</p>
-            <h1 id="profile-title">{sapProposal.headline}</h1>
-            <p className={styles.summary}>{sapProposal.summary}</p>
+            <h1 id="profile-title">{sapResume.headline}</h1>
+            <p className={styles.summary}>{sapResume.summary}</p>
           </div>
 
           <div className={styles.letter}>
             <h2>Dear Hiring Team,</h2>
-            {sapProposal.coverLetter.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+            {sapResume.coverLetter.map((paragraph) => (
+              <p key={paragraph}>
+                <EmphasizedSapKeywords text={paragraph} />
+              </p>
             ))}
           </div>
 
           <div className={styles.profileLinks}>
             <p>
               <MapPin aria-hidden="true" size={16} weight="regular" />
-              <span>{sapProposal.location}</span>
+              <span>{sapResume.location}</span>
             </p>
-            <Link href="/blog?lang=en">
+            <Link href="/blog/sap-switching">
               <span>Visit my SAP blog</span>
               <ArrowRight aria-hidden="true" size={17} weight="regular" />
             </Link>
@@ -145,32 +163,23 @@ export default function SapProposalPage() {
         </section>
 
         <section className={styles.video} aria-labelledby="video-title">
-          <div className={styles.videoHeading}>
-            <div>
-              <p>SAP learning</p>
-              <h2 id="video-title">My SAP SD presentation</h2>
-            </div>
-            <span>SAP RAP / ABAP / SAP SD</span>
-          </div>
-          <div className={styles.videoFrame}>
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${sapProposal.video.id}`}
-              title={sapProposal.video.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          </div>
+          <VideoCarousel
+            videos={[
+              sapResume.videos.introduction,
+              sapResume.videos.sapSd,
+              sapResume.videos.sapRap,
+            ]}
+          />
         </section>
 
         <section className={styles.projects} aria-labelledby="projects-title">
           <header className={styles.projectsHeading}>
             <div>
               <h2 id="projects-title">Projects</h2>
-              <p>Explore from left to right</p>
+              <p>Visit my Coding page for full experience details</p>
             </div>
             <Link href="/coding">
-              <span>Full experience</span>
+              <span>See full experience</span>
               <ArrowRight aria-hidden="true" size={17} weight="regular" />
             </Link>
           </header>
@@ -184,6 +193,12 @@ export default function SapProposalPage() {
           </div>
         </section>
       </div>
+      <LiveChatWidget
+        launcherText="Have questions for Thanh?"
+        subtitle="Ask about Thanh's experience"
+        variant="resume"
+        welcomeMessage="Hi, ask me about Thanh's SAP learning and software engineering experience."
+      />
     </main>
   );
 }
