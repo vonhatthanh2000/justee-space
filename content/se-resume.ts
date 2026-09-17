@@ -1,5 +1,3 @@
-import type { ResumeProfile } from "../src/components/resume/resume-page";
-
 export const seResume = {
   name: "Thanh Vo",
   headline: "Software Engineer",
@@ -19,4 +17,4 @@ export const seResume = {
   cvHref: "/content/coding/Thanh_SE_CV.pdf",
   welcomeMessage:
     "Hi, ask me about Thanh's software engineering experience, backend systems, and projects.",
-} as const satisfies ResumeProfile;
+} as const;
