@@ -9,7 +9,13 @@ type Video = {
   title: string;
 };
 
-export function VideoCarousel({ videos }: { videos: readonly Video[] }) {
+export function VideoCarousel({
+  videos,
+  label = "SAP learning",
+}: {
+  videos: readonly Video[];
+  label?: string;
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const lastWheelChange = useRef(0);
   const activeVideo = videos[activeIndex];
@@ -39,10 +45,12 @@ export function VideoCarousel({ videos }: { videos: readonly Video[] }) {
     <>
       <div className={styles.videoHeading}>
         <div>
-          <p>SAP learning</p>
+          <p>{label}</p>
           <h2 id="video-title">{activeVideo.title}</h2>
         </div>
-        <span>{videos.length} presentations</span>
+        <span>
+          {videos.length} {videos.length === 1 ? "presentation" : "presentations"}
+        </span>
       </div>
 
       <div className={styles.videoCarousel}>
