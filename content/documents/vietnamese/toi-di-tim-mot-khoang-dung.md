@@ -104,3 +104,16 @@ Nếu những ngày ở biển mang lại cảm giác tự do và rộng mở, �
 Tôi chạy đến Thung Lũng Vàng, nơi có nhiều cây thông mang nét đẹp đậm chất Đà Lạt, cũng chụp được nhiều ảnh ở đây và quay được những đoạn rất cinematic. Xong, tôi đặt phòng cho nghỉ ngơi buổi chiều và sáng hôm sau. Tôi tiếp tục chọn phòng trên Agoda, và bất ngờ 1 lần nữa, phòng cách Hồ Xuân Hương 3p đi xe nhưng chỉ có giá 250k, tôi không mong đợi gì nhiều, nghĩ chắc phòng cũng bình thường, nhưng phòng rất xinh xắn, đáp ứng đầy đủ nhu cầu cơ bản của tôi.
 
 Tôi cho phép mình nghỉ ngơi cả buổi chiều không làm gì cả, ngủ 1 giấc trưa thật ngon rồi tính tiếp. Tôi cũng có vài địa điểm muốn đến nhưng chiều hôm đó tôi chỉ muốn đi dạo thôi, thế là tôi loanh quanh Hồ Xuân Hương và cũng quay được vài video deep deep ở đó.
+
+Buổi tối tôi có ghé Quảng trường Lâm Viên, ngồi uống 1 ly đậu nành nóng nghe saxophone, cũng sanh chảnh phết, haha. Tôi cũng hoà mình vào đám đông tại chợ để cảm nhận lại không khí của đám đông, tôi cô lập bản thân mình quá lâu rồi.
+
+Trút hết ưu phiền rồi quay lại homestay thôi. Tối đó tôi lên kế hoạch 4h30 sáng hôm sau đi săn mây, mà nửa muốn đi nửa không, vì trời vừa mưa, tôi không chắc đường lên có an toàn không nữa. Ngủ đến sáng, 4h tôi bật dậy, không hiểu sao lúc này tôi lười biếng ghê luôn, chả muốn đi đâu nữa, với lâu rồi tôi mới có cảm giác ngủ ngon như vậy, cuối cùng, tôi không nghĩ gì đến chuyện săn mây nữa, ngủ tiếp, giờ không ai cản được tôi đâu. Haha.
+
+Tầm 7h thì tôi dậy, lúc này là gần như tôi đã rất hài lòng về chuyến đi của mình rồi, tôi đi tìm đến một quán ăn bán bánh ướt lòng gà đặc trưng của Đà Lạt, xong mua 1 ly cà phê đen ra Hồ Xuân Hương ngồi nhâm nhi một lát rồi chào tạm biệt nơi này.
+
+### Có những chuyến đi chỉ để được nghỉ
+
+Những tâm lý bất ổn của tôi, phần lớn đến từ việc nó không đạt được như kỳ vọng, hoặc là do sự thay đổi quá nhanh của thị trường làm tôi không thích ứng kịp, bị chơ vơ. Và tôi cũng nhận ra, khi đặt kỳ vọng quá nhiều thì tỷ lệ tôi bị hụt hẫng cũng nhiều hơn. Tôi học được cách chỉ nên kiểm soát những thứ mình có thể kiểm soát, chuyện gì tới nó sẽ tới, không cần nghiêm trọng hoá vấn đề.
+Chuyến đi này có những trục trặc ngoài ý muốn, may là vẫn chưa xảy ra vấn đề gì quá nghiêm trọng. Tuy nhiên, chính những điều đó làm chuyến đi này đáng nhớ hơn nhiều. Tôi liên tưởng chuyến đi này đến những việc xảy ra gần đây trong cuộc đời mình, rõ ràng phải có những chông gai, khó khăn thì mới tạo nên sự cứng rắn hiện tại.
+
+Một chuyến đi đáng nhớ.
