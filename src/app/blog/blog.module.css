@@ -827,6 +827,24 @@
   transform: translateY(-3px);
 }
 
+.newBadge {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 1;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(188, 107, 77, 0.35);
+  border-radius: 999px;
+  color: var(--blog-accent);
+  background: rgba(255, 251, 247, 0.88);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .featuredConstellation {
   position: relative;
   overflow: hidden;
@@ -1445,6 +1463,19 @@
   font-weight: 550;
   line-height: 1.08;
   text-align: center;
+  pointer-events: none;
+  opacity: 0.25;
+  transform: translateY(-3px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.graphNode:hover strong,
+.graphNode:focus-visible strong,
+.graphNode.nodeLabelPersistent strong {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .graphPage:lang(vi) .previewMarkdown h2,
@@ -1763,6 +1794,18 @@
   max-height: calc(100dvh - 3rem);
 }
 
+.readerCollection {
+  overflow-y: auto;
+  padding-right: 0.55rem;
+  overscroll-behavior: contain;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.readerCollection::-webkit-scrollbar {
+  display: none;
+}
+
 .contextRail {
   justify-self: end;
   width: min(100%, 220px);
@@ -1784,18 +1827,55 @@
 }
 
 .readerPartGroup {
-  display: grid;
-  gap: 0.15rem;
+  border-bottom: 1px solid var(--blog-line);
 }
 
 .readerPartLabel {
-  margin: 0 0 0.35rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.6rem 0;
+  border: 0;
   color: var(--blog-faint);
   font-family: var(--mono);
   font-size: 0.58rem;
   line-height: 1.45;
   letter-spacing: 0.075em;
+  text-align: left;
   text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  transition: color 160ms ease;
+}
+
+.readerPartLabel::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: var(--blog-accent);
+  font-size: 0.8rem;
+}
+
+.readerPartLabel:hover,
+.readerPartLabel:focus-visible,
+.readerPartLabel[aria-expanded="true"] {
+  color: var(--blog-ink);
+}
+
+.readerPartLabel:focus-visible {
+  outline: 2px solid var(--blog-blue);
+  outline-offset: 3px;
+}
+
+.readerPartLabel[aria-expanded="true"]::after {
+  content: "−";
+}
+
+.readerPartDocuments {
+  display: grid;
+  gap: 0.15rem;
+  padding-bottom: 0.45rem;
 }
 
 .readerCollection nav a {
@@ -2465,6 +2545,8 @@
   .readerCollection {
     position: static;
     max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
   .readerCollection .railLabel,
   .readerCollection nav {

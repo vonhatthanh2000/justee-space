@@ -3,13 +3,19 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Graph, Sparkle } from "@phosphor-icons/react";
-import type { BlogDocument, DocumentCategory } from "@/lib/documents";
+import type {
+  BlogListDocument,
+  DocumentCategory,
+  DocumentSearchIndex,
+} from "@/lib/documents";
 import type { DocumentLanguage } from "@/lib/document-language";
 import {
   documentLanguages,
   formatDocumentDate,
+  getBlogHref,
   getDocumentHref,
 } from "@/lib/document-language";
+import { getDocumentSearchIndexHref } from "@/lib/document-catalog";
 import { BlogToolbar } from "./blog-toolbar";
 import { LanguageFlags } from "./language-flags";
 import styles from "@/app/blog/blog.module.css";
@@ -24,12 +30,25 @@ export function BlogCollection({
   documents,
   language,
 }: {
-  documents: BlogDocument[];
+  documents: BlogListDocument[];
   language: DocumentLanguage;
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchIndex, setSearchIndex] =
+    useState<DocumentSearchIndex | null>(null);
+  const [searchIndexFailed, setSearchIndexFailed] = useState(false);
+
+  const sortedDocuments = useMemo(
+    () =>
+      [...documents].sort(
+        (first, second) =>
+          second.publishedAt.localeCompare(first.publishedAt) ||
+          first.slug.localeCompare(second.slug),
+      ),
+    [documents],
+  );
 
   const tags = useMemo(() => {
     const counts = new Map<string, number>();
@@ -54,6 +73,40 @@ export function BlogCollection({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  const shouldLoadSearchIndex = query.trim().length > 0;
+  const isSearchIndexLoading =
+    shouldLoadSearchIndex && !searchIndex && !searchIndexFailed;
+
+  useEffect(() => {
+    if (!shouldLoadSearchIndex || searchIndex || searchIndexFailed) return;
+
+    const controller = new AbortController();
+
+    fetch(getDocumentSearchIndexHref(language), {
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Search index request failed: ${response.status}`);
+        }
+        return response.json() as Promise<DocumentSearchIndex>;
+      })
+      .then(setSearchIndex)
+      .catch((error: unknown) => {
+        if (error instanceof Error && error.name === "AbortError") return;
+        setSearchIndexFailed(true);
+      });
+
+    return () => controller.abort();
+  }, [language, searchIndex, searchIndexFailed, shouldLoadSearchIndex]);
+
+  function updateQuery(value: string) {
+    setQuery(value);
+    if (value.trim().length > 0 && searchIndexFailed) {
+      setSearchIndexFailed(false);
+    }
+  }
+
   const filtered = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     return documents.filter((document) => {
@@ -64,12 +117,13 @@ export function BlogCollection({
         selectedTags.some((tag) => document.tags.includes(tag));
       const matchesQuery =
         normalizedQuery.length === 0 ||
-        `${document.part ?? ""} ${document.title} ${document.summary} ${document.content} ${document.tags.join(" ")}`
+        (searchIndex?.[document.slug] ??
+          `${document.part ?? ""} ${document.title} ${document.summary} ${document.tags.join(" ")}`)
           .toLowerCase()
           .includes(normalizedQuery);
       return matchesCategory && matchesTags && matchesQuery;
     });
-  }, [category, documents, query, selectedTags]);
+  }, [category, documents, query, searchIndex, selectedTags]);
 
   function toggleTag(tag: string) {
     setSelectedTags((current) =>
@@ -79,14 +133,14 @@ export function BlogCollection({
     );
   }
 
-  const featured = documents[0];
+  const featured = sortedDocuments[0];
 
   return (
     <>
       <BlogToolbar
         activeMode="documents"
         query={query}
-        onQueryChange={setQuery}
+        onQueryChange={updateQuery}
         language={language}
       />
       <div className={styles.collectionPage}>
@@ -176,7 +230,7 @@ export function BlogCollection({
               {(["vi", "en"] as DocumentLanguage[]).map((option) => (
                 <Link
                   className={language === option ? styles.modeActive : ""}
-                  href={option === "vi" ? "/blog" : "/blog?lang=en"}
+                  href={getBlogHref(option)}
                   hrefLang={option}
                   key={option}
                   aria-current={language === option ? "page" : undefined}
@@ -205,6 +259,9 @@ export function BlogCollection({
                 <i />
                 <i />
               </div>
+              <span className={styles.newBadge}>
+                {language === "vi" ? "Mới" : "New"}
+              </span>
               <div className={styles.featuredCopy}>
                 <span
                   className={`${styles.categoryName} ${styles[featured.category.toLowerCase()]}`}
@@ -248,7 +305,11 @@ export function BlogCollection({
                   ? "All documents"
                   : category}
             </h2>
-            <span>{filtered.length} documents</span>
+            <span>
+              {isSearchIndexLoading
+                ? "Searching documents…"
+                : `${filtered.length} documents`}
+            </span>
           </div>
 
           {filtered.length > 0 ? (
@@ -294,11 +355,17 @@ export function BlogCollection({
                         document.language,
                       )}
                     </time>
-                    <span>{document.connections.length} connections</span>
+                    <span>{document.connectionCount} connections</span>
                   </div>
                   <ArrowUpRight size={18} aria-hidden="true" />
                 </Link>
               ))}
+            </div>
+          ) : isSearchIndexLoading ? (
+            <div className={styles.emptyState} aria-live="polite">
+              <div className={styles.emptyOrbit} aria-hidden="true" />
+              <h2>Searching documents…</h2>
+              <p>Loading the full-text search index.</p>
             </div>
           ) : (
             <div className={styles.emptyState}>

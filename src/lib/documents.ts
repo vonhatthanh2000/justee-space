@@ -6,9 +6,22 @@ import {
   type DocumentLanguage,
 } from "./document-language";
 import { listMarkdownFiles } from "./document-files";
+import {
+  createBlogListDocuments,
+  createDocumentSearchIndex,
+  createGraphDocuments,
+  type BlogListDocument,
+  type DocumentSearchIndex,
+  type GraphDocument,
+} from "./document-catalog";
 
 export type DocumentCategory = "Personal" | "Technical";
 export type { DocumentLanguage } from "./document-language";
+export type {
+  BlogListDocument,
+  DocumentSearchIndex,
+  GraphDocument,
+} from "./document-catalog";
 
 export type BlogDocument = {
   slug: string;
@@ -228,4 +241,22 @@ export function getDocument(
   return getDocuments(preferredLanguage).find(
     (document) => document.slug === slug,
   );
+}
+
+export function getBlogListDocuments(
+  preferredLanguage: DocumentLanguage = defaultDocumentLanguage,
+): BlogListDocument[] {
+  return createBlogListDocuments(getDocuments(preferredLanguage));
+}
+
+export function getDocumentSearchIndex(
+  preferredLanguage: DocumentLanguage = defaultDocumentLanguage,
+): DocumentSearchIndex {
+  return createDocumentSearchIndex(getDocuments(preferredLanguage));
+}
+
+export function getGraphDocuments(
+  preferredLanguage: DocumentLanguage = defaultDocumentLanguage,
+): GraphDocument[] {
+  return createGraphDocuments(getDocuments(preferredLanguage));
 }

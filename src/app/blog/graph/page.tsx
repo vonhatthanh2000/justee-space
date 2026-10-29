@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/header";
 import { GraphExplorer } from "@/components/blog/graph-explorer";
-import { getDocuments } from "@/lib/documents";
+import { getGraphDocuments } from "@/lib/documents";
 import { isDocumentLanguage } from "@/lib/document-language";
 import styles from "../blog.module.css";
 
@@ -27,7 +27,7 @@ export default async function GraphPage({
     <main className={styles.blogRoot}>
       <Header />
       <GraphExplorer
-        documents={getDocuments(language)}
+        documents={getGraphDocuments(language)}
         initialDocument={requestedDocument}
         language={language}
       />
