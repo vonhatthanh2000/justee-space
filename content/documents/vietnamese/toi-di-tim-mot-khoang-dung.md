@@ -107,13 +107,13 @@ Tôi cho phép mình nghỉ ngơi cả buổi chiều không làm gì cả, ng�
 
 Buổi tối tôi có ghé Quảng trường Lâm Viên, ngồi uống 1 ly đậu nành nóng nghe saxophone, cũng sanh chảnh phết, haha. Tôi cũng hoà mình vào đám đông tại chợ để cảm nhận lại không khí của đám đông, tôi cô lập bản thân mình quá lâu rồi.
 
-Trút hết ưu phiền rồi quay lại homestay thôi. Tối đó tôi lên kế hoạch 4h30 sáng hôm sau đi săn mây, mà nửa muốn đi nửa không, vì trời vừa mưa, tôi không chắc đường lên có an toàn không nữa. Ngủ đến sáng, 4h tôi bật dậy, không hiểu sao lúc này tôi lười biếng ghê luôn, chả muốn đi đâu nữa, với lâu rồi tôi mới có cảm giác ngủ ngon như vậy, cuối cùng, tôi không nghĩ gì đến chuyện săn mây nữa, ngủ tiếp, giờ không ai cản được tôi đâu. Haha.
+Trút hết ưu phiền rồi quay lại homestay thôi. Tối đó tôi lên kế hoạch 4h30 sáng hôm sau đi săn mây, mà nửa muốn đi nửa không, vì trời vừa mưa, tôi không chắc đường lên có an toàn không nữa. Ngủ đến sáng, 4h tôi bật dậy, không hiểu sao lúc này tôi lại bật chế độ lười biếng, chả muốn đi đâu nữa, với lâu rồi tôi mới có cảm giác ngủ ngon như vậy, cuối cùng, tôi không nghĩ gì đến chuyện săn mây nữa, ngủ tiếp, giờ không ai cản được tôi đâu. Haha.
 
 Tầm 7h thì tôi dậy, lúc này là gần như tôi đã rất hài lòng về chuyến đi của mình rồi, tôi đi tìm đến một quán ăn bán bánh ướt lòng gà đặc trưng của Đà Lạt, xong mua 1 ly cà phê đen ra Hồ Xuân Hương ngồi nhâm nhi một lát rồi chào tạm biệt nơi này.
 
 ### Có những chuyến đi chỉ để được nghỉ
 
-Những tâm lý bất ổn của tôi, phần lớn đến từ việc nó không đạt được như kỳ vọng, hoặc là do sự thay đổi quá nhanh của thị trường làm tôi không thích ứng kịp, bị chơ vơ. Và tôi cũng nhận ra, khi đặt kỳ vọng quá nhiều thì tỷ lệ tôi bị hụt hẫng cũng nhiều hơn. Tôi học được cách chỉ nên kiểm soát những thứ mình có thể kiểm soát, chuyện gì tới nó sẽ tới, không cần nghiêm trọng hoá vấn đề.
-Chuyến đi này có những trục trặc ngoài ý muốn, may là vẫn chưa xảy ra vấn đề gì quá nghiêm trọng. Tuy nhiên, chính những điều đó làm chuyến đi này đáng nhớ hơn nhiều. Tôi liên tưởng chuyến đi này đến những việc xảy ra gần đây trong cuộc đời mình, rõ ràng phải có những chông gai, khó khăn thì mới tạo nên sự cứng rắn hiện tại.
+Những tâm lý bất ổn của tôi, phần lớn đến từ việc thực tế không đạt được như kỳ vọng, hoặc là do sự thay đổi quá nhanh của thị trường làm tôi không thích ứng kịp, bị chơ vơ. Và tôi cũng nhận ra, khi đặt kỳ vọng quá nhiều thì tỷ lệ tôi bị hụt hẫng cũng nhiều hơn. Tôi học được cách chỉ nên kiểm soát những thứ mình có thể kiểm soát, chuyện gì tới nó sẽ tới, không cần nghiêm trọng hoá vấn đề.
+Chuyến đi này có những trục trặc ngoài ý muốn, may là vẫn chưa xảy ra vấn đề gì quá nghiêm trọng. Tuy nhiên, chính những điều đó làm chuyến đi này đáng nhớ hơn nhiều. Tôi liên tưởng chuyến đi này đến những việc xảy ra gần đây trong cuộc đời mình, rõ ràng phải có những chông gai, khó khăn thì mới tạo nên sự cứng rắn của tôi ở hiện tại.
 
 Một chuyến đi đáng nhớ.

@@ -1827,7 +1827,7 @@
 }
 
 .readerPartGroup {
-  border-bottom: 1px solid var(--blog-line);
+  min-width: 0;
 }
 
 .readerPartLabel {
