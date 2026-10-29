@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   CSSProperties,
   PointerEvent as ReactPointerEvent,
@@ -18,7 +18,7 @@ import {
   Plus,
   X,
 } from "@phosphor-icons/react";
-import type { BlogDocument, DocumentCategory } from "@/lib/documents";
+import type { DocumentCategory, GraphDocument } from "@/lib/documents";
 import type { DocumentLanguage } from "@/lib/document-language";
 import {
   getGraphPositions,
@@ -31,6 +31,7 @@ import {
   getGraphHref,
 } from "@/lib/document-language";
 import { prepareDocumentMarkdown } from "@/lib/document-markdown";
+import { getDocumentPreviewHref } from "@/lib/document-catalog";
 import { BlogToolbar } from "./blog-toolbar";
 import { LanguageFlags } from "./language-flags";
 import styles from "@/app/blog/blog.module.css";
@@ -39,13 +40,14 @@ const categoryOptions: DocumentCategory[] = ["Personal", "Technical"];
 const minimumZoom = 0.65;
 const maximumZoom = 1.6;
 const connectedNodeFollowStrength = 0.42;
+const crowdedGroupNodeThreshold = 6;
 
 export function GraphExplorer({
   documents,
   initialDocument,
   language,
 }: {
-  documents: BlogDocument[];
+  documents: GraphDocument[];
   initialDocument?: string;
   language: DocumentLanguage;
 }) {
@@ -55,6 +57,10 @@ export function GraphExplorer({
     useState<DocumentCategory[]>(categoryOptions);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedSlug, setSelectedSlug] = useState(initialDocument ?? "");
+  const [previewContentByDocument, setPreviewContentByDocument] = useState<
+    Record<string, string>
+  >({});
+  const [failedPreviewKeys, setFailedPreviewKeys] = useState<string[]>([]);
   const [movedNodePositions, setMovedNodePositions] = useState(
     () => new Map<string, readonly [number, number]>(),
   );
@@ -132,7 +138,99 @@ export function GraphExplorer({
     );
   }, [visibleDocuments, visibleSlugs]);
 
+  const nodeStats = useMemo(() => {
+    const neighbors = new Map(
+      visibleDocuments.map((document) => [document.slug, new Set<string>()]),
+    );
+
+    for (const edge of edges) {
+      neighbors.get(edge.from)?.add(edge.to);
+      neighbors.get(edge.to)?.add(edge.from);
+    }
+
+    const stats = new Map<
+      string,
+      { connectionCount: number; groupSize: number }
+    >();
+    const visited = new Set<string>();
+
+    for (const slug of neighbors.keys()) {
+      if (visited.has(slug)) continue;
+      const group: string[] = [];
+      const queue = [slug];
+      visited.add(slug);
+
+      while (queue.length > 0) {
+        const current = queue.shift();
+        if (!current) continue;
+        group.push(current);
+
+        for (const neighbor of neighbors.get(current) ?? []) {
+          if (visited.has(neighbor)) continue;
+          visited.add(neighbor);
+          queue.push(neighbor);
+        }
+      }
+
+      for (const groupSlug of group) {
+        stats.set(groupSlug, {
+          connectionCount: neighbors.get(groupSlug)?.size ?? 0,
+          groupSize: group.length,
+        });
+      }
+    }
+
+    return stats;
+  }, [edges, visibleDocuments]);
+
   const selected = documents.find((document) => document.slug === selectedSlug);
+  const selectedPreviewKey = selected
+    ? `${selected.language}:${selected.slug}`
+    : "";
+  const selectedPreviewContent = selectedPreviewKey
+    ? previewContentByDocument[selectedPreviewKey]
+    : undefined;
+  const selectedPreviewFailed = failedPreviewKeys.includes(selectedPreviewKey);
+
+  useEffect(() => {
+    if (
+      !selected ||
+      selectedPreviewContent !== undefined ||
+      selectedPreviewFailed
+    ) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const previewKey = `${selected.language}:${selected.slug}`;
+
+    fetch(getDocumentPreviewHref(selected.slug, selected.language), {
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Document preview request failed: ${response.status}`);
+        }
+        return response.json() as Promise<{ previewContent?: unknown }>;
+      })
+      .then((payload) => {
+        if (typeof payload.previewContent !== "string") {
+          throw new Error("Document preview response is invalid.");
+        }
+        setPreviewContentByDocument((current) => ({
+          ...current,
+          [previewKey]: payload.previewContent as string,
+        }));
+      })
+      .catch((error: unknown) => {
+        if (error instanceof Error && error.name === "AbortError") return;
+        setFailedPreviewKeys((current) =>
+          current.includes(previewKey) ? current : [...current, previewKey],
+        );
+      });
+
+    return () => controller.abort();
+  }, [selected, selectedPreviewContent, selectedPreviewFailed]);
 
   function selectDocument(slug: string) {
     setSelectedSlug(slug);
@@ -471,9 +569,16 @@ export function GraphExplorer({
                 const isNeighbor =
                   selected?.connections.includes(document.slug) ||
                   document.connections.includes(selectedSlug);
+                const { connectionCount, groupSize } = nodeStats.get(
+                  document.slug,
+                ) ?? { connectionCount: 0, groupSize: 1 };
+                const isCrowdedGroup =
+                  groupSize > crowdedGroupNodeThreshold;
+                const hasPersistentLabel =
+                  !isCrowdedGroup || connectionCount > 1;
                 return (
                   <button
-                    className={`${styles.graphNode} ${styles[document.category.toLowerCase()]} ${isSelected ? styles.nodeSelected : ""} ${selected && !isSelected && !isNeighbor ? styles.nodeDimmed : ""}`}
+                    className={`${styles.graphNode} ${styles[document.category.toLowerCase()]} ${hasPersistentLabel ? styles.nodeLabelPersistent : ""} ${isSelected ? styles.nodeSelected : ""} ${selected && !isSelected && !isNeighbor ? styles.nodeDimmed : ""}`}
                     style={
                       {
                         left: `${(x / graphWidth) * 100}%`,
@@ -483,6 +588,8 @@ export function GraphExplorer({
                     }
                     type="button"
                     data-graph-node
+                    data-connection-count={connectionCount}
+                    data-group-size={groupSize}
                     key={document.slug}
                     onClick={() => handleNodeClick(document.slug)}
                     onPointerDown={(event) =>
@@ -598,39 +705,55 @@ export function GraphExplorer({
               ))}
             </div>
             <div className={styles.previewMarkdown}>
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  h1: () => null,
-                  a: ({ href = "", children }) => (
-                    <a
-                      href={href}
-                      rel={href.startsWith("/blog/") ? undefined : "noreferrer"}
-                      target={href.startsWith("/blog/") ? undefined : "_blank"}
-                      onClick={(event) => {
-                        if (!href.startsWith("/blog/")) return;
-                        const slug = href.slice("/blog/".length).split("#")[0];
-                        if (
-                          !documents.some((document) => document.slug === slug)
-                        )
-                          return;
-                        event.preventDefault();
-                        selectDocument(slug);
-                      }}
-                    >
-                      {children}
-                    </a>
-                  ),
-                }}
-              >
-                {prepareDocumentMarkdown(selected.previewContent)}
-              </ReactMarkdown>
-              <p
-                className={styles.previewEllipsis}
-                aria-label="Preview continues on the full page"
-              >
-                ...
-              </p>
+              {selectedPreviewContent !== undefined ? (
+                <>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h1: () => null,
+                      a: ({ href = "", children }) => (
+                        <a
+                          href={href}
+                          rel={
+                            href.startsWith("/blog/") ? undefined : "noreferrer"
+                          }
+                          target={
+                            href.startsWith("/blog/") ? undefined : "_blank"
+                          }
+                          onClick={(event) => {
+                            if (!href.startsWith("/blog/")) return;
+                            const slug = href
+                              .slice("/blog/".length)
+                              .split("#")[0];
+                            if (
+                              !documents.some(
+                                (document) => document.slug === slug,
+                              )
+                            )
+                              return;
+                            event.preventDefault();
+                            selectDocument(slug);
+                          }}
+                        >
+                          {children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {prepareDocumentMarkdown(selectedPreviewContent)}
+                  </ReactMarkdown>
+                  <p
+                    className={styles.previewEllipsis}
+                    aria-label="Preview continues on the full page"
+                  >
+                    ...
+                  </p>
+                </>
+              ) : selectedPreviewFailed ? (
+                <p>Preview could not be loaded. Open the full page to read it.</p>
+              ) : (
+                <p aria-live="polite">Loading preview…</p>
+              )}
             </div>
             <div className={styles.previewConnections}>
               <span>

@@ -80,9 +80,9 @@ export default function Home() {
           </p>
           <div className="about-statement-line reveal" aria-hidden="true" />
           <p className="about-statement statement-reveal">
-            Beyond tech, I am driven by <strong>art and creativity</strong>,
+            Beyond tech, I am driven by <strong>art and creativity</strong>
             whether it&apos;s
-            <strong> photography, filming, or playing music</strong>. I love
+            <strong> photography, filming, or playing music</strong> I love
             exploring anything I find interesting.
           </p>
         </div>

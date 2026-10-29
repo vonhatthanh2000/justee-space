@@ -9,7 +9,12 @@ import { BlogToolbar } from "@/components/blog/blog-toolbar";
 import { LiveChatWidget } from "@/components/blog/live-chat-widget";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { LanguageFlags } from "@/components/blog/language-flags";
-import { getDocument, getDocuments } from "@/lib/documents";
+import { ReaderCollection } from "@/components/blog/reader-collection";
+import {
+  getDocument,
+  getDocuments,
+  type DocumentCategory,
+} from "@/lib/documents";
 import {
   documentLanguages,
   formatDocumentDate,
@@ -81,13 +86,34 @@ export default async function DocumentPage({
           (document.language === "vi"
             ? "Các bài viết khác"
             : "Other documents");
-        const group = groups.get(part) ?? [];
-        group.push(item);
-        groups.set(part, group);
+        const groupKey = `${item.category}:${part}`;
+        const group = groups.get(groupKey) ?? {
+          category: item.category,
+          label: part,
+          documents: [] as typeof documents,
+        };
+        group.documents.push(item);
+        groups.set(groupKey, group);
         return groups;
-      }, new Map<string, typeof documents>())
-      .entries(),
-  );
+      }, new Map<string, { category: DocumentCategory; label: string; documents: typeof documents }>())
+      .values(),
+  )
+    .map((group) => ({
+      ...group,
+      documents: [...group.documents].sort((first, second) =>
+        first.title.localeCompare(second.title, document.language, {
+          numeric: true,
+        }),
+      ),
+    }))
+    .sort(
+      (first, second) =>
+        (first.category === "Personal" ? 0 : 1) -
+          (second.category === "Personal" ? 0 : 1) ||
+        first.label.localeCompare(second.label, document.language, {
+          numeric: true,
+        }),
+    );
   const relatedSlugs = Array.from(
     new Set([...document.connections, ...document.backlinks]),
   );
@@ -146,27 +172,21 @@ export default async function DocumentPage({
             <ArrowLeft size={15} /> {copy.allDocuments}
           </Link>
           <p className={styles.railLabel}>{copy.collection}</p>
-          <nav aria-label={copy.navigation}>
-            {documentsByPart.map(([part, partDocuments]) => (
-              <div className={styles.readerPartGroup} key={part}>
-                <p className={styles.readerPartLabel}>{part}</p>
-                {partDocuments.map((item) => (
-                  <Link
-                    className={
-                      item.slug === document.slug
-                        ? styles.readerDocumentActive
-                        : ""
-                    }
-                    href={getDocumentHref(item.slug, item.language)}
-                    key={item.slug}
-                  >
-                    <span className={styles[item.category.toLowerCase()]} />
-                    {item.title}
-                  </Link>
-                ))}
-              </div>
-            ))}
-          </nav>
+          <ReaderCollection
+            activeSlug={document.slug}
+            groups={documentsByPart.map((group) => ({
+              label: group.label,
+              defaultOpen: group.category === "Personal",
+              items: group.documents.map((item) => ({
+                slug: item.slug,
+                title: item.title,
+                categoryClassName: styles[item.category.toLowerCase()],
+                href: getDocumentHref(item.slug, item.language),
+              })),
+            }))}
+            key={document.slug}
+            label={copy.navigation}
+          />
         </aside>
 
         <article className={styles.readerArticle} lang={document.language}>

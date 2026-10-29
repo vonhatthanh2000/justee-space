@@ -21,7 +21,7 @@ export function getDocumentHref(slug: string, language: DocumentLanguage): strin
 }
 
 export function getBlogHref(language: DocumentLanguage): string {
-  return language === defaultDocumentLanguage ? "/blog" : `/blog?lang=${language}`;
+  return language === defaultDocumentLanguage ? "/blog" : `/blog/${language}`;
 }
 
 export function getGraphHref(language: DocumentLanguage, document?: string): string {
